@@ -3,7 +3,10 @@
 	"package": "net.wouterb.blockblock.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"ExampleMixin"
+		"block.BlockMixin",
+		"block.AbstractBlockStateMixin",
+		"entity.ModEntityDataSaverMixin",
+		"entity.ModPlayerPermissionMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
