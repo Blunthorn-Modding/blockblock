@@ -5,38 +5,43 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.*;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 import net.wouterb.blockblock.util.IEntityDataSaver;
-import net.wouterb.blockblock.util.LockedData;
+import net.wouterb.blockblock.util.ModLockManager;
 
 import java.util.Collection;
 
 public class UnlockCommand {
     public static void register(CommandDispatcher<ServerCommandSource> serverCommandSourceCommandDispatcher, CommandRegistryAccess commandRegistryAccess, CommandManager.RegistrationEnvironment registrationEnvironment) {
-        LiteralArgumentBuilder<ServerCommandSource> command = CommandManager.literal("bb")
-                .requires(source -> source.hasPermissionLevel(2))
-                .then(CommandManager.literal("unlock")
+        LiteralArgumentBuilder<ServerCommandSource> command = CommandManager.literal("bb");
+        for(ModLockManager.LOCK_TYPES lockType : ModLockManager.LOCK_TYPES.values()){
+            command.requires(source -> source.hasPermissionLevel(2))
+            .then(CommandManager.literal("unlock")
+                .then(CommandManager.literal(lockType.toString())
                 .then(CommandManager.argument("targets", EntityArgumentType.entities())
                 .then(CommandManager.argument("block_or_tag", ItemStackArgumentType.itemStack(commandRegistryAccess))
-                .executes(context -> run(context.getSource(),
+                    .executes(context -> run(context.getSource(),
+                        lockType,
                         EntityArgumentType.getPlayers(context, "targets"),
-                        ItemStackArgumentType.getItemStackArgument(context, "block_or_tag"))))));
+                        ItemStackArgumentType.getItemStackArgument(context, "block_or_tag"))
+                    )
+                )
+                )
+                )
+            );
+        }
 
         serverCommandSourceCommandDispatcher.register(command);
     }
 
 
-    private static int run(ServerCommandSource source, Collection<ServerPlayerEntity> targets, ItemStackArgument blockOrTag) throws CommandSyntaxException {
+    private static int run(ServerCommandSource source, ModLockManager.LOCK_TYPES lockType, Collection<ServerPlayerEntity> targets, ItemStackArgument blockOrTag) throws CommandSyntaxException {
         // Implementation of your command logic
         for (ServerPlayerEntity target : targets) {
             String block_id = blockOrTag.asString();
-            source.sendFeedback(() -> Text.literal("Unlocking " + block_id + " for " + target.getName().getString()), false);
-
-            LockedData.unlockBlock((IEntityDataSaver) target, block_id);
+            ModLockManager.unlock((IEntityDataSaver) target, block_id, lockType, source);
         }
         return 1; // Return command result
     }
