@@ -23,7 +23,6 @@ public class BlockMixin {
 
     @Inject(method = "afterBreak", at = @At("HEAD"), cancellable = true)
     private void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool, CallbackInfo ci) {
-//        player.sendMessage(Text.of(Registries.BLOCK.getId(state.getBlock()).toString()));
         String blockId = Registries.BLOCK.getId(state.getBlock()).toString();
         if (((IPlayerPermissionHelper) player).isBlockLocked(blockId))
            ci.cancel();

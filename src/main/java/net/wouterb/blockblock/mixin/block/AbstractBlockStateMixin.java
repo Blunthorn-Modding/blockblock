@@ -4,6 +4,8 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -21,8 +23,11 @@ public class AbstractBlockStateMixin {
         BlockState state = world.getBlockState(pos);
         String blockId = Registries.BLOCK.getId(state.getBlock()).toString();
 
+        String translationKey = state.getBlock().getTranslationKey();
+        String localizedName = Text.translatable(translationKey).getString();
+
         if (((IPlayerPermissionHelper) player).isBlockLocked(blockId)){
-            player.sendMessage(Text.of(String.format("You do not have %s unlocked!", blockId)), true);
+            player.sendMessage(Text.of(String.format("You do not have %s unlocked!", localizedName)), true);
         }
     }
 }
