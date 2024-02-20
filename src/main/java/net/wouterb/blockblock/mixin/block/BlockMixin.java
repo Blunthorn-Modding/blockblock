@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import net.wouterb.blockblock.util.IPlayerPermissionHelper;
+import net.wouterb.blockblock.util.ModLockManager;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,7 +25,7 @@ public class BlockMixin {
     @Inject(method = "afterBreak", at = @At("HEAD"), cancellable = true)
     private void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool, CallbackInfo ci) {
         String blockId = Registries.BLOCK.getId(state.getBlock()).toString();
-        if (((IPlayerPermissionHelper) player).isBlockLocked(blockId))
+        if (((IPlayerPermissionHelper) player).isBlockLocked(blockId, ModLockManager.LOCK_TYPES.BREAKING))
            ci.cancel();
     }
 }

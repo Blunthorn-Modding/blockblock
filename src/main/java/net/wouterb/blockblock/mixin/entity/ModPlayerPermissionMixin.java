@@ -21,10 +21,9 @@ import org.slf4j.Logger;
 
 @Mixin(Entity.class)
 public class ModPlayerPermissionMixin implements IPlayerPermissionHelper {
-    @Override
-    public boolean isBlockLocked(String blockId) {
+    public boolean isBlockLocked(String blockId, ModLockManager.LOCK_TYPES lockType) {
         NbtCompound nbt = ((IEntityDataSaver) this).getPersistentData();
-        NbtList nbtList = nbt.getList(ModLockManager.getNbtKey(ModLockManager.LOCK_TYPES.BREAKING), NbtElement.STRING_TYPE);
+        NbtList nbtList = nbt.getList(ModLockManager.getNbtKey(lockType), NbtElement.STRING_TYPE);
 
         if (nbtList.contains(NbtString.of(blockId))){
             return true;
@@ -46,4 +45,5 @@ public class ModPlayerPermissionMixin implements IPlayerPermissionHelper {
         }
         return false;
     }
+
 }
