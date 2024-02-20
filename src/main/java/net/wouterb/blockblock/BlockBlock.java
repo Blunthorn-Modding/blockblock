@@ -1,8 +1,12 @@
 package net.wouterb.blockblock;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.fabric.api.tag.convention.v1.TagUtil;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.tag.TagManagerLoader;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 
@@ -27,6 +31,7 @@ public class BlockBlock implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Starting BlockBlock!");
+
 		ModConfigManager.registerConfig();
 
 		ServerPlayConnectionEvents.JOIN.register(BlockBlock::onPlayerJoin);

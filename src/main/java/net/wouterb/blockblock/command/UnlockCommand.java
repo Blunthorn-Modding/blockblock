@@ -8,6 +8,7 @@ import net.minecraft.command.argument.*;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Identifier;
 import net.wouterb.blockblock.util.IEntityDataSaver;
 import net.wouterb.blockblock.util.ModLockManager;
 
@@ -21,11 +22,11 @@ public class UnlockCommand {
             .then(CommandManager.literal("unlock")
                 .then(CommandManager.literal(lockType.toString())
                 .then(CommandManager.argument("targets", EntityArgumentType.entities())
-                .then(CommandManager.argument("block_or_tag", ItemStackArgumentType.itemStack(commandRegistryAccess))
+                .then(CommandManager.argument("namespace:id/tag", IdentifierArgumentType.identifier())
                     .executes(context -> run(context.getSource(),
                         lockType,
                         EntityArgumentType.getPlayers(context, "targets"),
-                        ItemStackArgumentType.getItemStackArgument(context, "block_or_tag"))
+                            IdentifierArgumentType.getIdentifier(context, "namespace:id/tag"))
                     )
                 )
                 )
@@ -37,13 +38,12 @@ public class UnlockCommand {
     }
 
 
-    private static int run(ServerCommandSource source, ModLockManager.LOCK_TYPES lockType, Collection<ServerPlayerEntity> targets, ItemStackArgument blockOrTag) throws CommandSyntaxException {
-        // Implementation of your command logic
+    private static int run(ServerCommandSource source, ModLockManager.LOCK_TYPES lockType, Collection<ServerPlayerEntity> targets, Identifier blockOrTag) throws CommandSyntaxException {
         for (ServerPlayerEntity target : targets) {
-            String block_id = blockOrTag.asString();
+            String block_id = blockOrTag.toString();
             ModLockManager.unlock((IEntityDataSaver) target, block_id, lockType, source);
         }
-        return 1; // Return command result
+        return 1;
     }
 
 }

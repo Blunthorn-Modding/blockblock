@@ -31,7 +31,6 @@ public class ModConfigManager {
             try {
                 FileReader reader = new FileReader(configFile);
                 String json = JsonParser.parseReader(reader).toString();
-                BlockBlock.LOGGER.info(json);
                 modConfig = gson.fromJson(json, ModConfig.class);
             } catch (FileNotFoundException e) {
                 generateDefaultConfig();

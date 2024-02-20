@@ -14,6 +14,7 @@ public class ModLockManager {
         BREAKING,
         BLOCK_INTERACTION,
         ENTITY_INTERACTION,
+        ENTITY_DROP,
         ITEM_USAGE,
         CRAFTING_RECIPE;
 
