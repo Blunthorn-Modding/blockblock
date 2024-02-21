@@ -17,7 +17,7 @@ import java.util.Collection;
 public class UnlockCommand {
     public static void register(CommandDispatcher<ServerCommandSource> serverCommandSourceCommandDispatcher, CommandRegistryAccess commandRegistryAccess, CommandManager.RegistrationEnvironment registrationEnvironment) {
         LiteralArgumentBuilder<ServerCommandSource> command = CommandManager.literal("bb");
-        for(ModLockManager.LOCK_TYPES lockType : ModLockManager.LOCK_TYPES.values()){
+        for(ModLockManager.LockType lockType : ModLockManager.LockType.values()){
             command.requires(source -> source.hasPermissionLevel(2))
             .then(CommandManager.literal("unlock")
                 .then(CommandManager.literal(lockType.toString())
@@ -38,7 +38,7 @@ public class UnlockCommand {
     }
 
 
-    private static int run(ServerCommandSource source, ModLockManager.LOCK_TYPES lockType, Collection<ServerPlayerEntity> targets, Identifier blockOrTag) throws CommandSyntaxException {
+    private static int run(ServerCommandSource source, ModLockManager.LockType lockType, Collection<ServerPlayerEntity> targets, Identifier blockOrTag) throws CommandSyntaxException {
         for (ServerPlayerEntity target : targets) {
             String block_id = blockOrTag.toString();
             ModLockManager.unlock((IEntityDataSaver) target, block_id, lockType, source);

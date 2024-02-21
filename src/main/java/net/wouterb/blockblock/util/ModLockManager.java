@@ -8,9 +8,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
 public class ModLockManager {
-    public static final String BREAKING_NBT_KEY = LOCK_TYPES.BREAKING.toString();
 
-    public static enum LOCK_TYPES {
+    public static enum LockType {
         BREAKING,
         BLOCK_INTERACTION,
         ENTITY_INTERACTION,
@@ -24,7 +23,7 @@ public class ModLockManager {
         }
     }
 
-    public static void unlock(IEntityDataSaver player, String id, LOCK_TYPES lockType, ServerCommandSource source) {
+    public static void unlock(IEntityDataSaver player, String id, LockType lockType, ServerCommandSource source) {
         NbtCompound nbt = player.getPersistentData();
         String nbtKey = getNbtKey(lockType);
         NbtList locked = nbt.getList(nbtKey, NbtCompound.STRING_TYPE);
@@ -39,7 +38,7 @@ public class ModLockManager {
     }
 
 
-    public static void lock(IEntityDataSaver player, String id, LOCK_TYPES lockType, ServerCommandSource source){
+    public static void lock(IEntityDataSaver player, String id, LockType lockType, ServerCommandSource source){
         NbtCompound nbt = player.getPersistentData();
         String nbtKey = getNbtKey(lockType);
         NbtList locked = nbt.getList(nbtKey, NbtCompound.STRING_TYPE);
@@ -52,7 +51,7 @@ public class ModLockManager {
         }
     }
 
-    public static String getNbtKey(LOCK_TYPES lockType) {
+    public static String getNbtKey(LockType lockType) {
         return lockType.toString();
     }
 

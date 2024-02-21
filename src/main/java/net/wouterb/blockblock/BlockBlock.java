@@ -1,12 +1,9 @@
 package net.wouterb.blockblock;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
-import net.fabricmc.fabric.api.tag.convention.v1.TagUtil;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.tag.TagManagerLoader;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 
@@ -21,8 +18,6 @@ import net.wouterb.blockblock.util.ModLockManager;
 import net.wouterb.blockblock.util.ModRegistries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 public class BlockBlock implements ModInitializer {
 	public static final String MOD_ID = "blockblock";
@@ -47,7 +42,7 @@ public class BlockBlock implements ModInitializer {
 		if (!data.contains(MOD_ID)){
 			LOGGER.info("Player without BlockBlock data joined, assigning default values...");
 			LockedDefaultValues defaultValues = ModConfigManager.getDefaultLockedValues();
-			for (ModLockManager.LOCK_TYPES lockType : ModLockManager.LOCK_TYPES.values()){
+			for (ModLockManager.LockType lockType : ModLockManager.LockType.values()){
 				String[] locked = defaultValues.getFieldByString(lockType.toString());
 				NbtList nbtList = new NbtList();
 				for (String id : locked)

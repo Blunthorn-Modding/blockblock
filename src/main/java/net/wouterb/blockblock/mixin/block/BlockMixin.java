@@ -25,7 +25,7 @@ public class BlockMixin {
     @Inject(method = "afterBreak", at = @At("HEAD"), cancellable = true)
     private void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool, CallbackInfo ci) {
         String blockId = Registries.BLOCK.getId(state.getBlock()).toString();
-        if (((IPlayerPermissionHelper) player).isBlockLocked(blockId, ModLockManager.LOCK_TYPES.BREAKING))
+        if (((IPlayerPermissionHelper) player).isBlockLocked(blockId, ModLockManager.LockType.BREAKING))
            ci.cancel();
     }
 }

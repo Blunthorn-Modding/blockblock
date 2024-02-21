@@ -6,7 +6,8 @@
 		"block.BlockMixin",
 		"block.AbstractBlockStateMixin",
 		"entity.ModEntityDataSaverMixin",
-		"entity.ModPlayerPermissionMixin"
+		"entity.ModPlayerPermissionMixin",
+		"entity.PlayerEntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
