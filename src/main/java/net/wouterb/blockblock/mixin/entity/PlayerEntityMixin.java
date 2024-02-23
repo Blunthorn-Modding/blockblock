@@ -37,19 +37,8 @@ public class PlayerEntityMixin {
         if (((IPlayerPermissionHelper) player).isEntityLocked(entityId, ModLockManager.LockType.ENTITY_INTERACTION)){
             player.sendMessage(Text.of(String.format("You do not have %s unlocked!", localizedName)), true);
             ci.setReturnValue(ActionResult.FAIL);
-//            player.dropItem(player.getStackInHand(hand), false);
 
             if (player instanceof ServerPlayerEntity playerEntity){
-//                ItemStack heldItemStack = player.getStackInHand(hand);
-//                PlayerInventory inventory = playerEntity.getInventory();
-//                int heldItemSlot = inventory.selectedSlot;
-
-                // Modify the held item stack (e.g., change it to an empty bucket)
-//                ItemStack emptyBucketStack = new ItemStack(Items.BUCKET); // Replace with the appropriate empty bucket item
-//                inventory.setStack(heldItemSlot, emptyBucketStack);
-//                player.setStackInHand(hand, emptyBucketStack);
-//                System.out.println(hand);
-
                 // Get the player's screen handler (e.g., the inventory screen)
                 ScreenHandler screenHandler = playerEntity.currentScreenHandler;
 
@@ -63,25 +52,6 @@ public class PlayerEntityMixin {
                 InventoryS2CPacket inventoryUpdatePacket = new InventoryS2CPacket(screenHandler.syncId, screenHandler.nextRevision(), updatedStacks, ItemStack.EMPTY);
                 playerEntity.networkHandler.sendPacket(inventoryUpdatePacket);
             }
-//            PlayerInventory inventory = player.getInventory();
-//            inventory.markDirty();
-//            inventory.removeOne(player.getStackInHand(hand));
-//            inventory.setStack(inventory.selectedSlot, Items.BUCKET.getDefaultStack());
-
-//            ItemStack itemStack = player.getStackInHand(hand);
-//            if (itemStack.isOf(Items.MILK_BUCKET)) {
-//                MinecraftServer server = player.getServer();
-//                if (server != null) {
-//                    System.out.println(server);
-//                    server.execute(() -> {
-//                        inventory.setStack(inventory.selectedSlot, Items.BUCKET.getDefaultStack());
-//                    });
-//                }
-//            }
-
-
-
         }
     }
-
 }

@@ -5,9 +5,10 @@
 	"mixins": [
 		"block.BlockMixin",
 		"block.AbstractBlockStateMixin",
-		"entity.ModEntityDataSaverMixin",
-		"entity.ModPlayerPermissionMixin",
-		"entity.PlayerEntityMixin"
+		"entity.EntityDataSaverMixin",
+		"entity.PlayerPermissionMixin",
+		"entity.PlayerEntityMixin",
+		"entity.LivingEntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
