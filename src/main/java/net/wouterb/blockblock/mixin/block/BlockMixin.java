@@ -7,6 +7,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -25,6 +26,16 @@ public class BlockMixin {
     @Inject(method = "afterBreak", at = @At("HEAD"), cancellable = true)
     private void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool, CallbackInfo ci) {
         String blockId = Registries.BLOCK.getId(state.getBlock()).toString();
+
+        String itemId = Registries.ITEM.getId(tool.getItem()).toString();
+        System.out.println(itemId);
+        if (((IPlayerPermissionHelper) player).isItemLocked(itemId, ModLockManager.LockType.ITEM_USAGE)) {
+            String translationKey = tool.getTranslationKey();
+            String localizedName = Text.translatable(translationKey).getString();
+
+            player.sendMessage(Text.of(String.format("You do not have %s unlocked!", localizedName)), true);
+            ci.cancel();
+        }
         if (((IPlayerPermissionHelper) player).isBlockLocked(blockId, ModLockManager.LockType.BREAKING))
            ci.cancel();
     }

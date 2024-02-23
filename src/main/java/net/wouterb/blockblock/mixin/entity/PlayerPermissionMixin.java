@@ -4,6 +4,8 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -31,6 +33,11 @@ public class PlayerPermissionMixin implements IPlayerPermissionHelper {
         return isObjectLocked(entityId, lockType, Registries.ENTITY_TYPE);
     }
 
+    @Override
+    public boolean isItemLocked(String itemId, ModLockManager.LockType lockType) {
+        return isObjectLocked(itemId, lockType, Registries.ITEM);
+    }
+
     private boolean isObjectLocked(String objectId, ModLockManager.LockType lockType, Registry<?> registry) {
         NbtList nbtList = getListOfLockedObjects(lockType);
 
@@ -50,6 +57,8 @@ public class PlayerPermissionMixin implements IPlayerPermissionHelper {
             if (object instanceof Block && ((Block) object).getDefaultState().isIn((TagKey<Block>) entryTagKey)) {
                 return true;
             } else if (object instanceof EntityType && ((EntityType<?>) object).isIn((TagKey<EntityType<?>>) entryTagKey)) {
+                return true;
+            } else if (object instanceof ItemStack && ((ItemStack) object).isIn((TagKey<Item>) entryTagKey)) {
                 return true;
             }
         }
