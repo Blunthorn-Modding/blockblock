@@ -28,7 +28,7 @@ public class BlockMixin {
         String blockId = Registries.BLOCK.getId(state.getBlock()).toString();
 
         String itemId = Registries.ITEM.getId(tool.getItem()).toString();
-        System.out.println(itemId);
+
         if (((IPlayerPermissionHelper) player).isItemLocked(itemId, ModLockManager.LockType.ITEM_USAGE)) {
             String translationKey = tool.getTranslationKey();
             String localizedName = Text.translatable(translationKey).getString();
@@ -36,6 +36,7 @@ public class BlockMixin {
             player.sendMessage(Text.of(String.format("You do not have %s unlocked!", localizedName)), true);
             ci.cancel();
         }
+
         if (((IPlayerPermissionHelper) player).isBlockLocked(blockId, ModLockManager.LockType.BREAKING))
            ci.cancel();
     }

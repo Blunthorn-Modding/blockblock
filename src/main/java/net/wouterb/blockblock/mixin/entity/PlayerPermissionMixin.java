@@ -45,6 +45,9 @@ public class PlayerPermissionMixin implements IPlayerPermissionHelper {
             return true;
         }
 
+        if (!objectId.startsWith("#"))
+            return false;
+
         Object object = registry.getOrEmpty(new Identifier(objectId)).orElse(null);
         if (object == null) {
             BlockBlock.LOGGER.warn(String.format("%s not found!", objectId));

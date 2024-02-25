@@ -25,10 +25,9 @@ public class AbstractBlockStateMixin {
         BlockState state = world.getBlockState(pos);
         String blockId = Registries.BLOCK.getId(state.getBlock()).toString();
 
-        String translationKey = state.getBlock().getTranslationKey();
-        String localizedName = Text.translatable(translationKey).getString();
-
         if (((IPlayerPermissionHelper) player).isBlockLocked(blockId, ModLockManager.LockType.BREAKING)){
+            String translationKey = state.getBlock().getTranslationKey();
+            String localizedName = Text.translatable(translationKey).getString();
             player.sendMessage(Text.of(String.format("You do not have %s unlocked!", localizedName)), true);
         }
     }
