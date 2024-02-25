@@ -10,7 +10,7 @@ import java.nio.file.Path;
 
 public class ModConfigManager {
     private static final Path CONFIG_DIR = Path.of(String.valueOf(FabricLoader.getInstance().getConfigDir()), BlockBlock.MOD_ID);
-    private static final String CONFIG_FILE_NAME = BlockBlock.MOD_ID + "_config.json";
+    private static final String CONFIG_FILE_NAME = BlockBlock.MOD_ID + "_config.properties";
     private static final String DEFAULT_VALUES_FILE_NAME = BlockBlock.MOD_ID + "_default_values.json";
 
     private static File configFile;
@@ -19,23 +19,22 @@ public class ModConfigManager {
     private static ModConfig modConfig;
     private static LockedDefaultValues lockedDefaultValues;
 
+
+    public static File getConfigFile() {
+        return configFile;
+    }
+
+
     public static void registerConfig() {
         Gson gson = new Gson();
 
         Path configPath = Path.of(String.valueOf(CONFIG_DIR), CONFIG_FILE_NAME);
         configFile = configPath.toFile();
-        if (!configFile.exists()){
+        if (!configFile.exists()) {
             BlockBlock.LOGGER.info("No config found, generating one...");
-            generateDefaultConfig();
+            ModConfig.generateDefaultConfig();
         } else {
-            try {
-                FileReader reader = new FileReader(configFile);
-                String json = JsonParser.parseReader(reader).toString();
-                modConfig = gson.fromJson(json, ModConfig.class);
-            } catch (FileNotFoundException e) {
-                generateDefaultConfig();
-                throw new RuntimeException(e);
-            }
+            ModConfig.load();
         }
 
         Path defaultValuesPath = Path.of(String.valueOf(CONFIG_DIR), DEFAULT_VALUES_FILE_NAME);
@@ -59,25 +58,6 @@ public class ModConfigManager {
         return lockedDefaultValues;
     }
 
-    public static void generateDefaultConfig() {
-        configFile.getParentFile().mkdirs();
-
-        try {
-            Files.createFile(configFile.toPath());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        JsonObject jsonObject = new JsonObject();
-
-        try (FileWriter writer = new FileWriter(configFile.toString())){
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            gson.toJson(jsonObject, writer);
-
-        } catch (IOException e){
-            BlockBlock.LOGGER.error(e.toString());
-        }
-    }
 
     private static void generateDefaultValuesFile() {
         try {

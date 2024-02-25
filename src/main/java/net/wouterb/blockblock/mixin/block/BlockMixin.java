@@ -33,7 +33,7 @@ public class BlockMixin {
             String translationKey = tool.getTranslationKey();
             String localizedName = Text.translatable(translationKey).getString();
 
-            player.sendMessage(Text.of(String.format("You do not have %s unlocked!", localizedName)), true);
+            ModLockManager.sendLockedFeedbackToPlayer(player, ModLockManager.LockType.ITEM_USAGE, localizedName);
             ci.cancel();
         }
 

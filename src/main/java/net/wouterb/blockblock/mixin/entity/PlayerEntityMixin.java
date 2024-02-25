@@ -35,7 +35,7 @@ public class PlayerEntityMixin {
         String entityId = EntityType.getId(entityType).toString();
 
         if (((IPlayerPermissionHelper) player).isEntityLocked(entityId, ModLockManager.LockType.ENTITY_INTERACTION)){
-            player.sendMessage(Text.of(String.format("You do not have %s unlocked!", localizedName)), true);
+            ModLockManager.sendLockedFeedbackToPlayer(player, ModLockManager.LockType.ENTITY_INTERACTION, localizedName);
             ci.setReturnValue(ActionResult.FAIL);
 
             if (player instanceof ServerPlayerEntity playerEntity){

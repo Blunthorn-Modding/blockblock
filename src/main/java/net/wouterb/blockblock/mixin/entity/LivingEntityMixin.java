@@ -26,7 +26,7 @@ public class LivingEntityMixin {
 
         if (sourceAttacker instanceof PlayerEntity player){
             if (((IPlayerPermissionHelper) player).isEntityLocked(entityId, ModLockManager.LockType.ENTITY_DROP)){
-                player.sendMessage(Text.of(String.format("You do not have %s unlocked!", localizedName)), true);
+                ModLockManager.sendLockedFeedbackToPlayer(player, ModLockManager.LockType.ITEM_USAGE, localizedName);
                 ci.cancel();
             }
         }

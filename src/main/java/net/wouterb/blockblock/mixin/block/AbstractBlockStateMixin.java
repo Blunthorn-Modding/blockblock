@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.wouterb.blockblock.util.IPlayerPermissionHelper;
 import net.wouterb.blockblock.util.ModLockManager;
+import net.wouterb.blockblock.util.ModLockManager.LockType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -25,10 +26,10 @@ public class AbstractBlockStateMixin {
         BlockState state = world.getBlockState(pos);
         String blockId = Registries.BLOCK.getId(state.getBlock()).toString();
 
-        if (((IPlayerPermissionHelper) player).isBlockLocked(blockId, ModLockManager.LockType.BREAKING)){
+        if (((IPlayerPermissionHelper) player).isBlockLocked(blockId, LockType.BREAKING)){
             String translationKey = state.getBlock().getTranslationKey();
             String localizedName = Text.translatable(translationKey).getString();
-            player.sendMessage(Text.of(String.format("You do not have %s unlocked!", localizedName)), true);
+            ModLockManager.sendLockedFeedbackToPlayer(player, LockType.BREAKING, localizedName);
         }
     }
 
@@ -39,8 +40,8 @@ public class AbstractBlockStateMixin {
 
         String translationKey = state.getBlock().getTranslationKey();
         String localizedName = Text.translatable(translationKey).getString();
-        if (((IPlayerPermissionHelper) player).isBlockLocked(blockId, ModLockManager.LockType.BLOCK_INTERACTION)) {
-            player.sendMessage(Text.of(String.format("You do not have %s unlocked!", localizedName)), true);
+        if (((IPlayerPermissionHelper) player).isBlockLocked(blockId, LockType.BLOCK_INTERACTION)) {
+            ModLockManager.sendLockedFeedbackToPlayer(player, LockType.BLOCK_INTERACTION, localizedName);
             ci.setReturnValue(ActionResult.FAIL);
         }
 

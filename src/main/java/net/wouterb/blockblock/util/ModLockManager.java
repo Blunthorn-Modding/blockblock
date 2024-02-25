@@ -1,11 +1,13 @@
 package net.wouterb.blockblock.util;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.wouterb.blockblock.config.ModConfig;
 
 public class ModLockManager {
 
@@ -23,6 +25,13 @@ public class ModLockManager {
         }
     }
 
+    public static void sendLockedFeedbackToPlayer(PlayerEntity player, LockType lockType, String objectId) {
+        if (!ModConfig.displayMessagesToUser()) return;
+
+        String message = ModConfig.getMessage(lockType, objectId);
+        player.sendMessage(Text.of(message), true);
+    }
+
     public static void unlock(IEntityDataSaver player, String id, LockType lockType, ServerCommandSource source) {
         NbtCompound nbt = player.getPersistentData();
         String nbtKey = getNbtKey(lockType);
@@ -36,7 +45,6 @@ public class ModLockManager {
             source.sendFeedback(() -> Text.literal(((ServerPlayerEntity) player).getName().getString() + " already has " + id + " unlocked in " + lockType.toString()), false);
         }
     }
-
 
     public static void lock(IEntityDataSaver player, String id, LockType lockType, ServerCommandSource source){
         NbtCompound nbt = player.getPersistentData();

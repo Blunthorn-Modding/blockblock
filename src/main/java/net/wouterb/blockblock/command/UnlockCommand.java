@@ -3,17 +3,12 @@ package net.wouterb.blockblock.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.datafixers.util.Either;
-import net.minecraft.block.Block;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.*;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
 import net.wouterb.blockblock.util.IEntityDataSaver;
 import net.wouterb.blockblock.util.ModLockManager;
 
@@ -21,7 +16,7 @@ import java.util.Collection;
 
 public class UnlockCommand {
     public static void register(CommandDispatcher<ServerCommandSource> serverCommandSourceCommandDispatcher, CommandRegistryAccess commandRegistryAccess, CommandManager.RegistrationEnvironment registrationEnvironment) {
-        LiteralArgumentBuilder<ServerCommandSource> command = CommandManager.literal("bb");
+        LiteralArgumentBuilder<ServerCommandSource> command = CommandManager.literal("bb").requires(source -> source.hasPermissionLevel(2));
 
         for (ModLockManager.LockType lockType : ModLockManager.LockType.values()) {
             var commandUnlock = CommandManager.literal("unlock").requires(source -> source.hasPermissionLevel(2));
