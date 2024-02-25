@@ -33,41 +33,41 @@ public class LockCommand {
 
             if (lockType == ModLockManager.LockType.ENTITY_DROP || lockType == ModLockManager.LockType.ENTITY_INTERACTION) {
                 commandUnlock.then(commandLockType.then(commandTarget
-                        .then(CommandManager.argument("namespace:id/tag", RegistryEntryPredicateArgumentType.registryEntryPredicate(commandRegistryAccess, RegistryKeys.ENTITY_TYPE))
+                        .then(CommandManager.argument("namespace:entity_id/tag", RegistryEntryPredicateArgumentType.registryEntryPredicate(commandRegistryAccess, RegistryKeys.ENTITY_TYPE))
                                 .executes(context -> run(context.getSource(),
                                         lockType,
                                         EntityArgumentType.getPlayers(context, "targets"),
-                                        RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:id/tag", RegistryKeys.ENTITY_TYPE))
+                                        RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:entity_id/tag", RegistryKeys.ENTITY_TYPE))
                                 )
                         )
                 ));
             } else if (lockType == ModLockManager.LockType.ITEM_USAGE) {
                 commandUnlock.then(commandLockType.then(commandTarget
-                        .then(CommandManager.argument("namespace:id/tag", RegistryEntryPredicateArgumentType.registryEntryPredicate(commandRegistryAccess, RegistryKeys.ITEM))
+                        .then(CommandManager.argument("namespace:item_id/tag", RegistryEntryPredicateArgumentType.registryEntryPredicate(commandRegistryAccess, RegistryKeys.ITEM))
                                 .executes(context -> run(context.getSource(),
                                         lockType,
                                         EntityArgumentType.getPlayers(context, "targets"),
-                                        RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:id/tag", RegistryKeys.ITEM))
+                                        RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:item_id/tag", RegistryKeys.ITEM))
                                 )
                         )
                 ));
             } else if (lockType == ModLockManager.LockType.CRAFTING_RECIPE) {
                 commandUnlock.then(commandLockType.then(commandTarget
-                        .then(CommandManager.argument("namespace:id/tag", RegistryEntryPredicateArgumentType.registryEntryPredicate(commandRegistryAccess, RegistryKeys.RECIPE_TYPE))
+                        .then(CommandManager.argument("namespace:recipe_id/tag", RegistryEntryPredicateArgumentType.registryEntryPredicate(commandRegistryAccess, RegistryKeys.RECIPE_TYPE))
                                 .executes(context -> run(context.getSource(),
                                         lockType,
                                         EntityArgumentType.getPlayers(context, "targets"),
-                                        RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:id/tag", RegistryKeys.RECIPE_TYPE))
+                                        RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:recipe_id/tag", RegistryKeys.RECIPE_TYPE))
                                 )
                         )
                 ));
             } else {
                 commandUnlock.then(commandLockType.then(commandTarget
-                        .then(CommandManager.argument("namespace:id/tag", RegistryEntryPredicateArgumentType.registryEntryPredicate(commandRegistryAccess, RegistryKeys.BLOCK))
+                        .then(CommandManager.argument("namespace:block_id/tag", RegistryEntryPredicateArgumentType.registryEntryPredicate(commandRegistryAccess, RegistryKeys.BLOCK))
                                 .executes(context -> run(context.getSource(),
                                         lockType,
                                         EntityArgumentType.getPlayers(context, "targets"),
-                                        RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:id/tag", RegistryKeys.BLOCK))
+                                        RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:block_id/tag", RegistryKeys.BLOCK))
                                 )
                         )
                 ));
