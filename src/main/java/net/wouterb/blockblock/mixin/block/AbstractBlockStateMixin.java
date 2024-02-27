@@ -21,6 +21,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AbstractBlock.AbstractBlockState.class)
 public class AbstractBlockStateMixin {
+
+    // Block breaking lock message
     @Inject(method = "onBlockBreakStart", at = @At("HEAD"))
     private void onBlockBreakStart(World world, BlockPos pos, PlayerEntity player, CallbackInfo ci) {
         BlockState state = world.getBlockState(pos);
@@ -33,6 +35,7 @@ public class AbstractBlockStateMixin {
         }
     }
 
+    // Block interaction lock
     @Inject(method = "onUse", at = @At("INVOKE"), cancellable = true)
     public void onUse(World world, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> ci) {
         BlockState state = world.getBlockState(hit.getBlockPos());

@@ -29,6 +29,7 @@ public class BlockMixin {
 
         String itemId = Registries.ITEM.getId(tool.getItem()).toString();
 
+        // Breaking with tool lock
         if (((IPlayerPermissionHelper) player).isItemLocked(itemId, ModLockManager.LockType.ITEM_USAGE)) {
             String translationKey = tool.getTranslationKey();
             String localizedName = Text.translatable(translationKey).getString();
@@ -37,6 +38,7 @@ public class BlockMixin {
             ci.cancel();
         }
 
+        // General block breaking lock
         if (((IPlayerPermissionHelper) player).isBlockLocked(blockId, ModLockManager.LockType.BREAKING))
            ci.cancel();
     }

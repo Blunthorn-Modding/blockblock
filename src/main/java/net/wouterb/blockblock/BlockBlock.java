@@ -3,13 +3,11 @@ package net.wouterb.blockblock;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
-import net.minecraft.registry.Registries;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
-
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.wouterb.blockblock.config.LockedDefaultValues;
 import net.wouterb.blockblock.config.ModConfigManager;
@@ -30,7 +28,6 @@ public class BlockBlock implements ModInitializer {
 		ModConfigManager.registerConfig();
 
 		ServerPlayConnectionEvents.JOIN.register(BlockBlock::onPlayerJoin);
-
 
 		ModRegistries.registerCommands();
 	}

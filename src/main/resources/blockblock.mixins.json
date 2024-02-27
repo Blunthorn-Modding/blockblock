@@ -8,7 +8,26 @@
 		"entity.EntityDataSaverMixin",
 		"entity.PlayerPermissionMixin",
 		"entity.PlayerEntityMixin",
-		"entity.LivingEntityMixin"
+		"entity.LivingEntityMixin",
+		"item.ItemMixin",
+		"item.AxeItemMixin",
+		"item.HoeItemMixin",
+		"item.ShovelItemMixin",
+		"item.BowItemMixin",
+		"item.BucketItemMixin",
+		"item.CompassItemMixin",
+		"item.CrossbowItemMixin",
+		"item.ArmorItemMixin",
+		"item.EquipmentMixin",
+		"item.FishingRodItemMixin",
+		"item.FlintAndSteelItemMixin",
+		"item.GlassBottleItemMixin",
+		"item.PotionItemMixin",
+		"item.ThrowablePotionItemMixin",
+		"item.ExperienceBottleItemMixin",
+		"item.ShieldItemMixin",
+		"item.TridentItemMixin",
+		"misc.ScreenHandlerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
