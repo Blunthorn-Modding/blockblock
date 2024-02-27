@@ -50,11 +50,11 @@ public class LockCommand {
                 ));
             } else if (lockType == ModLockManager.LockType.CRAFTING_RECIPE) {
                 commandUnlock.then(commandLockType.then(commandTarget
-                        .then(CommandManager.argument("namespace:recipe_id/tag", RegistryEntryPredicateArgumentType.registryEntryPredicate(commandRegistryAccess, RegistryKeys.RECIPE_TYPE))
+                        .then(CommandManager.argument("namespace:recipe_id/tag", RegistryEntryPredicateArgumentType.registryEntryPredicate(commandRegistryAccess, RegistryKeys.ITEM))
                                 .executes(context -> run(context.getSource(),
                                         lockType,
                                         EntityArgumentType.getPlayers(context, "targets"),
-                                        RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:recipe_id/tag", RegistryKeys.RECIPE_TYPE))
+                                        RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:recipe_id/tag", RegistryKeys.ITEM))
                                 )
                         )
                 ));

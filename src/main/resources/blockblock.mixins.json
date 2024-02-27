@@ -9,6 +9,7 @@
 		"entity.PlayerPermissionMixin",
 		"entity.PlayerEntityMixin",
 		"entity.LivingEntityMixin",
+		"entity.ArmorStandEntityMixin",
 		"item.ItemMixin",
 		"item.AxeItemMixin",
 		"item.HoeItemMixin",
@@ -27,7 +28,9 @@
 		"item.ExperienceBottleItemMixin",
 		"item.ShieldItemMixin",
 		"item.TridentItemMixin",
-		"misc.ScreenHandlerMixin"
+		"misc.ScreenHandlerMixin",
+		"crafting.CraftingScreenHandlerMixin",
+		"crafting.SmithingScreenHandlerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
