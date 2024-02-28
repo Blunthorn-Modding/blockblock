@@ -18,7 +18,7 @@ public class ModConfig {
     private static String messageItemUsage = "You do not have {OBJECT} unlocked!";
     private static String messageRecipeUsage = "You do not have {OBJECT} unlocked!";
 
-    @Comment("Whether the user will get the messages listed above or not")
+    @Comment("GENERAL\n# Whether the user will get the messages listed above or not")
     private static boolean displayMessagesToUser = true;
 
     public static String getMessage(ModLockManager.LockType lockType, String objectId) {
@@ -66,9 +66,10 @@ public class ModConfig {
     }
     public static void generateDefaultConfig() {
         File configFile = ModConfigManager.getConfigFile();
+        configFile.getParentFile().mkdirs();
         try (FileWriter writer = new FileWriter(configFile)) {
             writer.write("# BlockBlock Config\n\n");
-            writer.write("# For the various messages, '{OBJECT}' will get replaced with the translated object name.\n");
+            writer.write("# MESSAGES\n# '{OBJECT}' will get replaced with the translated object name.\n");
 
             Field[] fields = ModConfig.class.getDeclaredFields();
 
