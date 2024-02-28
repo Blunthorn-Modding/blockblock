@@ -28,6 +28,7 @@
 		"item.ExperienceBottleItemMixin",
 		"item.ShieldItemMixin",
 		"item.TridentItemMixin",
+		"item.BrushItemMixin",
 		"misc.ScreenHandlerMixin",
 		"crafting.CraftingScreenHandlerMixin",
 		"crafting.SmithingScreenHandlerMixin"
