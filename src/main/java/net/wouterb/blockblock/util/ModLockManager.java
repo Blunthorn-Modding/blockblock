@@ -8,6 +8,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.wouterb.blockblock.config.ModConfig;
+import net.wouterb.blockblock.network.ClientLockSyncHandler;
 
 public class ModLockManager {
 
@@ -41,6 +42,7 @@ public class ModLockManager {
             locked.remove(NbtString.of(id));
             nbt.put(nbtKey, locked);
             source.sendFeedback(() -> Text.literal("Unlocking " + id + " for " + ((ServerPlayerEntity) player).getName().getString() + " in " + lockType.toString()), false);
+            ClientLockSyncHandler.updateClient((ServerPlayerEntity) player, nbt);
         } else {
             source.sendFeedback(() -> Text.literal(((ServerPlayerEntity) player).getName().getString() + " already has " + id + " unlocked in " + lockType.toString()), false);
         }
@@ -54,6 +56,7 @@ public class ModLockManager {
             locked.add(NbtString.of(id));
             nbt.put(nbtKey, locked);
             source.sendFeedback(() -> Text.literal("Locking " + id + " for " + ((ServerPlayerEntity)player).getName().getString() + " in " + lockType.toString()), false);
+            ClientLockSyncHandler.updateClient((ServerPlayerEntity) player, nbt);
         } else {
             source.sendFeedback(() -> Text.literal(((ServerPlayerEntity)player).getName().getString() + " already has " + id + " locked in " + lockType.toString()), false);
         }

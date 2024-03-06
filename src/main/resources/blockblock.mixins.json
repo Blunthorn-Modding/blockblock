@@ -11,6 +11,7 @@
 		"entity.LivingEntityMixin",
 		"entity.ArmorStandEntityMixin",
 		"item.ItemMixin",
+		"item.ItemStackMixin",
 		"item.AxeItemMixin",
 		"item.HoeItemMixin",
 		"item.ShovelItemMixin",
