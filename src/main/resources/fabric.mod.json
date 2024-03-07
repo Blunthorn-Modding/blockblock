@@ -21,6 +21,9 @@
 		"client": [
 			"net.wouterb.blockblock.BlockBlockClient"
 		],
+		"jade": [
+			"net.wouterb.blockblock.compat.jade.JadeCompatPlugin"
+		],
 		"fabric-datagen": [
 			"net.wouterb.blockblock.BlockBlockDataGenerator"
 		]
