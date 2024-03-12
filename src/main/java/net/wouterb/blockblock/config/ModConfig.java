@@ -22,6 +22,7 @@ public class ModConfig {
 
     @Comment("GENERAL\n# Whether the user will get the messages listed above or not")
     private static boolean displayMessagesToUser = true;
+    private static boolean creativeBypassesRestrictions = true;
 
     public static String getMessage(ModLockManager.LockType lockType, String objectId) {
         return switch (lockType){
@@ -33,6 +34,10 @@ public class ModConfig {
             case ITEM_USAGE -> messageItemUsage.replace(objectIdPlaceholder, objectId);
             case CRAFTING_RECIPE -> messageRecipeUsage.replace(objectIdPlaceholder, objectId);
         };
+    }
+
+    public static boolean getCreativeBypassesRestrictions() {
+        return creativeBypassesRestrictions;
     }
 
     public static boolean displayMessagesToUser() {

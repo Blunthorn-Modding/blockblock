@@ -15,6 +15,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.wouterb.blockblock.BlockBlock;
+import net.wouterb.blockblock.config.ModConfig;
 import net.wouterb.blockblock.util.IEntityDataSaver;
 import net.wouterb.blockblock.util.IPlayerPermissionHelper;
 import net.wouterb.blockblock.util.ModLockManager;
@@ -39,6 +40,9 @@ public class PlayerPermissionMixin implements IPlayerPermissionHelper {
     }
 
     private boolean isObjectLocked(String objectId, ModLockManager.LockType lockType, Registry<?> registry) {
+        PlayerEntity player = (PlayerEntity) (Object) this;
+        if (player.isCreative() && ModConfig.getCreativeBypassesRestrictions()) return false;
+
         NbtList nbtList = getListOfLockedObjects(lockType);
 
         if (nbtList.contains(NbtString.of(objectId))) {
