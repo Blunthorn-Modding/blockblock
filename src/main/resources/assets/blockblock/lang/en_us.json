@@ -1,5 +1,6 @@
 {
   "tooltip.blockblock.breaking_locked": "Breaking locked!",
+  "tooltip.blockblock.placement_locked": "Placement locked!",
   "tooltip.blockblock.block_interaction_locked": "Interaction locked!",
   "tooltip.blockblock.entity_interaction_locked": "Interaction locked!",
   "tooltip.blockblock.entity_drop_locked": "Entity drops locked!",

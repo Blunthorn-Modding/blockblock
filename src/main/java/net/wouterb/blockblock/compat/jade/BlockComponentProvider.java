@@ -33,6 +33,9 @@ public enum BlockComponentProvider implements IBlockComponentProvider {
         if (playerPermission.isBlockLocked(blockId, ModLockManager.LockType.BREAKING))
             tooltip.add(1, Text.translatable("tooltip.blockblock.breaking_locked").formatted(Formatting.RED));
 
+        if (playerPermission.isBlockLocked(blockId, ModLockManager.LockType.PLACEMENT))
+            tooltip.add(1, Text.translatable("tooltip.blockblock.placement_locked").formatted(Formatting.RED));
+
         if (playerPermission.isBlockLocked(blockId, ModLockManager.LockType.BLOCK_INTERACTION))
             tooltip.add(1, Text.translatable("tooltip.blockblock.block_interaction_locked").formatted(Formatting.RED));
 

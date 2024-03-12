@@ -3,10 +3,13 @@ package net.wouterb.blockblock.mixin.item;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.wouterb.blockblock.util.IPlayerPermissionHelper;
+import net.wouterb.blockblock.util.ModLockManager;
 import net.wouterb.blockblock.util.ModLockManager.LockType;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,6 +34,9 @@ public class ItemStackMixin {
         if (playerPermission.isBlockLocked(stackId, LockType.BREAKING))
             list.add(1, Text.translatable("tooltip.blockblock.breaking_locked").formatted(Formatting.RED));
 
+        if (playerPermission.isBlockLocked(stackId, LockType.PLACEMENT))
+            list.add(1, Text.translatable("tooltip.blockblock.placement_locked").formatted(Formatting.RED));
+
         if (playerPermission.isBlockLocked(stackId, LockType.BLOCK_INTERACTION))
             list.add(1, Text.translatable("tooltip.blockblock.block_interaction_locked").formatted(Formatting.RED));
 
@@ -45,5 +51,15 @@ public class ItemStackMixin {
 
         if (playerPermission.isItemLocked(stackId, LockType.CRAFTING_RECIPE))
             list.add(1, Text.translatable("tooltip.blockblock.crafting_recipe_locked").formatted(Formatting.RED));
+    }
+
+    @Inject(method = "useOnBlock", at = @At("HEAD"), cancellable = true)
+    public void useOnBlock(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
+        String stackId = Registries.ITEM.getId(context.getStack().getItem()).toString();
+
+        PlayerEntity player = context.getPlayer();
+
+        if (player != null && ((IPlayerPermissionHelper) player).isBlockLocked(stackId, LockType.PLACEMENT))
+            ci.setReturnValue(ActionResult.FAIL);
     }
 }

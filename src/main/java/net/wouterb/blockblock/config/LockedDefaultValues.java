@@ -2,6 +2,7 @@ package net.wouterb.blockblock.config;
 
 public class LockedDefaultValues {
     public final String[] breaking;
+    public final String[] placement;
     public final String[] block_interaction;
     public final String[] entity_interaction;
     public final String[] entity_drop;
@@ -10,6 +11,7 @@ public class LockedDefaultValues {
 
     public LockedDefaultValues(){
         breaking = new String[]{};
+        placement = new String[]{};
         block_interaction = new String[]{};
         entity_interaction = new String[]{};
         entity_drop = new String[]{};
@@ -17,8 +19,9 @@ public class LockedDefaultValues {
         crafting_recipe = new String[]{};
     }
 
-    public LockedDefaultValues(String[] breaking, String[] blockInteraction, String[] entityInteraction, String[] entityDrop, String[] itemUsage, String[] craftingRecipe) {
+    public LockedDefaultValues(String[] breaking, String[] placement, String[] blockInteraction, String[] entityInteraction, String[] entityDrop, String[] itemUsage, String[] craftingRecipe) {
         this.breaking = breaking;
+        this.placement = placement;
         this.block_interaction = blockInteraction;
         this.entity_interaction = entityInteraction;
         this.entity_drop = entityDrop;
@@ -29,6 +32,7 @@ public class LockedDefaultValues {
     public String[] getFieldByString(String propertyName) {
         return switch (propertyName) {
             case "breaking" -> breaking;
+            case "placement" -> placement;
             case "block_interaction" -> block_interaction;
             case "entity_interaction" -> entity_interaction;
             case "entity_drop" -> entity_drop;

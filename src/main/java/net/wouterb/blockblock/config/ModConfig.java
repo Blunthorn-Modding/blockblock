@@ -11,7 +11,9 @@ import java.lang.reflect.Field;
 import java.util.Properties;
 
 public class ModConfig {
+    private static String objectIdPlaceholder = "{OBJECT}";
     private static String messageBreaking = "You do not have {OBJECT} unlocked!";
+    private static String messagePlacement = "You do not have {OBJECT} unlocked!";
     private static String messageBlockInteraction = "You do not have {OBJECT} unlocked!";
     private static String messageEntityInteraction = "You do not have {OBJECT} unlocked!";
     private static String messageEntityDrop = "You do not have {OBJECT} unlocked!";
@@ -23,12 +25,13 @@ public class ModConfig {
 
     public static String getMessage(ModLockManager.LockType lockType, String objectId) {
         return switch (lockType){
-            case BREAKING -> messageBreaking.replace("{OBJECT}", objectId);
-            case BLOCK_INTERACTION -> messageBlockInteraction.replace("{OBJECT}", objectId);
-            case ENTITY_INTERACTION -> messageEntityInteraction.replace("{OBJECT}", objectId);
-            case ENTITY_DROP -> messageEntityDrop.replace("{OBJECT}", objectId);
-            case ITEM_USAGE -> messageItemUsage.replace("{OBJECT}", objectId);
-            case CRAFTING_RECIPE -> messageRecipeUsage.replace("{OBJECT}", objectId);
+            case BREAKING -> messageBreaking.replace(objectIdPlaceholder, objectId);
+            case PLACEMENT -> messagePlacement.replace(objectIdPlaceholder, objectId);
+            case BLOCK_INTERACTION -> messageBlockInteraction.replace(objectIdPlaceholder, objectId);
+            case ENTITY_INTERACTION -> messageEntityInteraction.replace(objectIdPlaceholder, objectId);
+            case ENTITY_DROP -> messageEntityDrop.replace(objectIdPlaceholder, objectId);
+            case ITEM_USAGE -> messageItemUsage.replace(objectIdPlaceholder, objectId);
+            case CRAFTING_RECIPE -> messageRecipeUsage.replace(objectIdPlaceholder, objectId);
         };
     }
 
@@ -69,7 +72,7 @@ public class ModConfig {
         configFile.getParentFile().mkdirs();
         try (FileWriter writer = new FileWriter(configFile)) {
             writer.write("# BlockBlock Config\n\n");
-            writer.write("# MESSAGES\n# '{OBJECT}' will get replaced with the translated object name.\n");
+            writer.write("# MESSAGES\n# The value of 'objectIdPlaceholder' will get replaced with the object ID's.\n");
 
             Field[] fields = ModConfig.class.getDeclaredFields();
 

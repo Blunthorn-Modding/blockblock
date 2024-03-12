@@ -14,6 +14,7 @@ public class ModLockManager {
 
     public static enum LockType {
         BREAKING,
+        PLACEMENT,
         BLOCK_INTERACTION,
         ENTITY_INTERACTION,
         ENTITY_DROP,

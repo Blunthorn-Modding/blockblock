@@ -19,3 +19,11 @@ public class BlockBlock implements ModInitializer {
 
 	}
 }
+
+//TODO: Longer block breaking if it's locked
+//TODO: Option for being unable to break the blocks if breaking is locked
+
+//TODO: Create integration
+//TODO: Tom's Simple Storage integration
+//TODO: Backpack integration
+//TODO: (Possibly?) Trowel mod integration
