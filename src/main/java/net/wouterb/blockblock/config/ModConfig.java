@@ -1,7 +1,8 @@
 package net.wouterb.blockblock.config;
 
 import net.wouterb.blockblock.BlockBlock;
-import net.wouterb.blockblock.util.Comment;
+import net.wouterb.blockblock.util.config.BlankLine;
+import net.wouterb.blockblock.util.config.Comment;
 import net.wouterb.blockblock.util.ModLockManager;
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,9 +21,14 @@ public class ModConfig {
     private static String messageItemUsage = "You do not have {OBJECT} unlocked!";
     private static String messageRecipeUsage = "You do not have {OBJECT} unlocked!";
 
+    @BlankLine
     @Comment("GENERAL\n# Whether the user will get the messages listed above or not")
     private static boolean displayMessagesToUser = true;
     private static boolean creativeBypassesRestrictions = true;
+    @Comment("If true, a locked block in category 'breaking' will become unbreakable by mining with hand/tool")
+    private static boolean breakingLockedPreventsBreaking = false;
+    @Comment("This value determines how much longer it takes when trying to break a block that is locked.\n# Higher is slower. Value should be at least 0. Calculation: deltaBreakTime / lockedBreakTimeModifier")
+    private static float lockedBreakTimeModifier = 3.0f;
 
     public static String getMessage(ModLockManager.LockType lockType, String objectId) {
         return switch (lockType){
@@ -38,6 +44,12 @@ public class ModConfig {
 
     public static boolean getCreativeBypassesRestrictions() {
         return creativeBypassesRestrictions;
+    }
+
+    public static boolean getBreakingLockedPreventsBreaking() { return breakingLockedPreventsBreaking; }
+
+    public static float getLockedBreakTimeModifier() {
+        return lockedBreakTimeModifier;
     }
 
     public static boolean displayMessagesToUser() {
@@ -76,8 +88,8 @@ public class ModConfig {
         File configFile = ModConfigManager.getConfigFile();
         configFile.getParentFile().mkdirs();
         try (FileWriter writer = new FileWriter(configFile)) {
-            writer.write("# BlockBlock Config\n\n");
-            writer.write("# MESSAGES\n# The value of 'objectIdPlaceholder' will get replaced with the object ID's.\n");
+            writer.write("# BlockBlock Config\n");
+            writer.write("\n# MESSAGES\n# The value of 'objectIdPlaceholder' will get replaced with the object ID's.\n");
 
             Field[] fields = ModConfig.class.getDeclaredFields();
 
@@ -86,9 +98,13 @@ public class ModConfig {
 
                 String fieldName = field.getName();
 
+                if (field.isAnnotationPresent(BlankLine.class)){
+                    writer.write("\n");
+                }
+
                 if (field.isAnnotationPresent(Comment.class)){
                     Comment comment = field.getAnnotation(Comment.class);
-                    writer.write("\n# " + comment.value() + "\n");
+                    writer.write("# " + comment.value() + "\n");
                 }
                 try {
                     writeProperty(writer, fieldName, field.get(null).toString());
@@ -114,7 +130,7 @@ public class ModConfig {
             else if (type == boolean.class)
                 field.setBoolean(null, Boolean.parseBoolean(value.toString()));
             else if (type == float.class)
-                field.setFloat(null, (float) value);
+                field.setFloat(null, Float.parseFloat(value.toString()));
             else
                 field.set(null, value);
         } catch (ClassCastException e) {

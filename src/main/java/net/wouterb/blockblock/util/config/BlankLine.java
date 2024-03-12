@@ -1,4 +1,4 @@
-package net.wouterb.blockblock.util;
+package net.wouterb.blockblock.util.config;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +7,5 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Comment {
-    String value();
+public @interface BlankLine {
 }
