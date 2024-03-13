@@ -4,31 +4,48 @@ import net.wouterb.blockblock.BlockBlock;
 import net.wouterb.blockblock.util.config.BlankLine;
 import net.wouterb.blockblock.util.config.Comment;
 import net.wouterb.blockblock.util.ModLockManager;
+import net.wouterb.blockblock.util.config.StoreInConfig;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 public class ModConfig {
+    @StoreInConfig
     private static String objectIdPlaceholder = "{OBJECT}";
+    @StoreInConfig
     private static String messageBreaking = "You do not have {OBJECT} unlocked!";
+    @StoreInConfig
     private static String messagePlacement = "You do not have {OBJECT} unlocked!";
+    @StoreInConfig
     private static String messageBlockInteraction = "You do not have {OBJECT} unlocked!";
+    @StoreInConfig
     private static String messageEntityInteraction = "You do not have {OBJECT} unlocked!";
+    @StoreInConfig
     private static String messageEntityDrop = "You do not have {OBJECT} unlocked!";
+    @StoreInConfig
     private static String messageItemUsage = "You do not have {OBJECT} unlocked!";
+    @StoreInConfig
     private static String messageRecipeUsage = "You do not have {OBJECT} unlocked!";
 
     @BlankLine
     @Comment("GENERAL\n# Whether the user will get the messages listed above or not")
+    @StoreInConfig
     private static boolean displayMessagesToUser = true;
+    @StoreInConfig
     private static boolean creativeBypassesRestrictions = true;
     @Comment("If true, a locked block in category 'breaking' will become unbreakable by mining with hand/tool")
+    @StoreInConfig
     private static boolean breakingLockedPreventsBreaking = false;
     @Comment("This value determines how much longer it takes when trying to break a block that is locked.\n# Higher is slower. Value should be at least 0. Calculation: deltaBreakTime / lockedBreakTimeModifier")
-    private static float lockedBreakTimeModifier = 3.0f;
+    @StoreInConfig
+    private static float lockedBreakTimeModifier = 5.0f;
 
     public static String getMessage(ModLockManager.LockType lockType, String objectId) {
         return switch (lockType){
@@ -84,6 +101,7 @@ public class ModConfig {
             }
         }
     }
+
     public static void generateDefaultConfig() {
         File configFile = ModConfigManager.getConfigFile();
         configFile.getParentFile().mkdirs();
@@ -95,6 +113,8 @@ public class ModConfig {
 
             for (Field field : fields) {
                 field.setAccessible(true);
+
+                if (!field.isAnnotationPresent(StoreInConfig.class)) continue;
 
                 String fieldName = field.getName();
 
@@ -119,6 +139,15 @@ public class ModConfig {
 
     private static void writeProperty(FileWriter writer, String propertyName, String propertyValue) throws IOException {
         writer.write(propertyName + "=" + propertyValue + "\n");
+    }
+
+    public static void setFieldValue(String fieldName, Object value) {
+        try {
+            Field field = ModConfig.class.getDeclaredField(fieldName);
+            ModConfig.setFieldValue(field, value);
+        } catch (Exception e) {
+            BlockBlock.LOGGER.error("setFieldValue: " + e);
+        }
     }
 
     private static void setFieldValue(Field field, Object value) throws IllegalAccessException {

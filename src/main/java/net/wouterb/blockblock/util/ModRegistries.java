@@ -28,6 +28,7 @@ import net.wouterb.blockblock.config.LockedDefaultValues;
 import net.wouterb.blockblock.config.ModConfig;
 import net.wouterb.blockblock.config.ModConfigManager;
 import net.wouterb.blockblock.network.ClientLockSyncHandler;
+import net.wouterb.blockblock.network.ConfigSyncHandler;
 
 public class ModRegistries {
     public static void registerCommands() {
@@ -66,6 +67,7 @@ public class ModRegistries {
             }
         }
         ClientLockSyncHandler.updateClient(player, data);
+        ConfigSyncHandler.updateClient(player);
     }
 
     /**
