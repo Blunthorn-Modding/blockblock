@@ -22,6 +22,7 @@ Here you'll find what each each category will do when an object is locked within
 Operators can use the following commands:<br>
 `/bb lock [LOCK_TYPE] [TARGET] [TAG/OBJECT_ID]` will lock a tag or object in the given lock category.<br>
 `/bb unlock [LOCK_TYPE] [TARGET] [TAG/OBJECT_ID]` will unlock a tag or object in the given lock category.<br>
+`/bb reset [TARGET] [WIPE]` will either reset the target player(s) to the default values, or remove all restrictions depending on the `wipe` argument. The `wipe` argument is optional. If left out, will just reset to default values. <br>
 `/bb reload` reloads the config and the default values file.<br>
 <br>
 `[LOCK_TYPE]` can be one of these values: `[block_interaction | breaking | placement | crafting_recipe | entity_drop | entity_interaction | item_usage]` <br>
@@ -57,7 +58,9 @@ messageRecipeUsage=You do not have {OBJECT} unlocked!
 # GENERAL
 # Whether the user will get the messages listed above or not
 displayMessagesToUser=true
+# If true, players in creative will not be affected by locked objects
 creativeBypassesRestrictions=true
+# If true, a locked block in category 'breaking' will become unbreakable by mining with hand/tool
 breakingLockedPreventsBreaking=false
 # This value determines how much longer it takes when trying to break a block that is locked.
 # Higher is slower. Value should be at least 0. Calculation: deltaBreakTime / lockedBreakTimeModifier
