@@ -10,21 +10,18 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.wouterb.blockblock.BlockBlock;
 import net.wouterb.blockblock.command.LockCommand;
 import net.wouterb.blockblock.command.ReloadCommand;
+import net.wouterb.blockblock.command.ResetCommand;
 import net.wouterb.blockblock.command.UnlockCommand;
-import net.wouterb.blockblock.config.LockedDefaultValues;
 import net.wouterb.blockblock.config.ModConfig;
 import net.wouterb.blockblock.config.ModConfigManager;
 import net.wouterb.blockblock.network.ClientLockSyncHandler;
@@ -35,6 +32,7 @@ public class ModRegistries {
         CommandRegistrationCallback.EVENT.register(UnlockCommand::register);
         CommandRegistrationCallback.EVENT.register(LockCommand::register);
         CommandRegistrationCallback.EVENT.register(ReloadCommand::register);
+        CommandRegistrationCallback.EVENT.register(ResetCommand::register);
     }
 
     public static void registerConfigs() {
@@ -46,6 +44,7 @@ public class ModRegistries {
         ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
             NbtCompound oldNbt = ((IEntityDataSaver)oldPlayer).getPersistentData();
             ((IEntityDataSaver)newPlayer).setPersistentData(oldNbt);
+            ConfigSyncHandler.updateClient(newPlayer);
         });
         PlayerBlockBreakEvents.BEFORE.register(ModRegistries::onBlockBroken);
     }
@@ -56,15 +55,7 @@ public class ModRegistries {
 
         if (data.isEmpty()){
             BlockBlock.LOGGER.info("Player without BlockBlock data joined, assigning default values...");
-            LockedDefaultValues defaultValues = ModConfigManager.getDefaultLockedValues();
-            for (ModLockManager.LockType lockType : ModLockManager.LockType.values()){
-                String[] locked = defaultValues.getFieldByString(lockType.toString());
-                NbtList nbtList = new NbtList();
-                for (String id : locked)
-                    nbtList.add(NbtString.of(id));
-
-                data.put(lockType.toString(), nbtList);
-            }
+            ((IEntityDataSaver) player).setDefaultValues();
         }
         ClientLockSyncHandler.updateClient(player, data);
         ConfigSyncHandler.updateClient(player);

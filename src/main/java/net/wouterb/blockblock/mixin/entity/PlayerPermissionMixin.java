@@ -1,7 +1,6 @@
 package net.wouterb.blockblock.mixin.entity;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -14,7 +13,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.wouterb.blockblock.BlockBlock;
 import net.wouterb.blockblock.config.ModConfig;
 import net.wouterb.blockblock.util.IEntityDataSaver;
 import net.wouterb.blockblock.util.IPlayerPermissionHelper;
@@ -49,17 +47,16 @@ public class PlayerPermissionMixin implements IPlayerPermissionHelper {
             return true;
         }
 
-        if (!objectId.startsWith("#"))
-            return false;
-
         Object object = registry.getOrEmpty(new Identifier(objectId)).orElse(null);
-        if (object == null) {
-            BlockBlock.LOGGER.warn(String.format("%s not found!", objectId));
-            return false;
-        }
+        if (object == null) return false;
 
         for (NbtElement entry : nbtList) {
             String nbtString = entry.asString();
+
+            if (!nbtString.startsWith("#")) continue;
+
+            nbtString = nbtString.replace("#", "");
+
             TagKey<?> entryTagKey = TagKey.of(registry.getKey(), new Identifier(nbtString));
             if (object instanceof Block && ((Block) object).getDefaultState().isIn((TagKey<Block>) entryTagKey)) {
                 return true;
@@ -69,6 +66,8 @@ public class PlayerPermissionMixin implements IPlayerPermissionHelper {
                 return true;
             }
         }
+
+
 
         return false;
     }

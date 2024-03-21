@@ -38,6 +38,7 @@ public class ModConfig {
     @Comment("GENERAL\n# Whether the user will get the messages listed above or not")
     @StoreInConfig
     private static boolean displayMessagesToUser = true;
+    @Comment("If true, players in creative will not be affected by locked objects")
     @StoreInConfig
     private static boolean creativeBypassesRestrictions = true;
     @Comment("If true, a locked block in category 'breaking' will become unbreakable by mining with hand/tool")
@@ -107,7 +108,7 @@ public class ModConfig {
         configFile.getParentFile().mkdirs();
         try (FileWriter writer = new FileWriter(configFile)) {
             writer.write("# BlockBlock Config\n");
-            writer.write("\n# MESSAGES\n# The value of 'objectIdPlaceholder' will get replaced with the object ID's.\n");
+            writer.write("\n# MESSAGES\n# The value of 'objectIdPlaceholder' will get replaced with the translated object name.\n");
 
             Field[] fields = ModConfig.class.getDeclaredFields();
 

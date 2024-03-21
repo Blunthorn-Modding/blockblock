@@ -5,10 +5,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.registry.Registries;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.wouterb.blockblock.util.IPlayerPermissionHelper;
+import net.wouterb.blockblock.util.ItemUsageMixinHelper;
 import net.wouterb.blockblock.util.ModLockManager;
 import net.wouterb.blockblock.util.ModLockManager.LockType;
 import org.jetbrains.annotations.Nullable;
@@ -59,7 +61,10 @@ public class ItemStackMixin {
 
         PlayerEntity player = context.getPlayer();
 
-        if (player != null && ((IPlayerPermissionHelper) player).isBlockLocked(stackId, LockType.PLACEMENT))
+        if (player != null && ((IPlayerPermissionHelper) player).isBlockLocked(stackId, LockType.PLACEMENT)) {
             ci.setReturnValue(ActionResult.FAIL);
+            if (player instanceof ServerPlayerEntity serverPlayer)
+                ItemUsageMixinHelper.updateInventory(serverPlayer);
+        }
     }
 }

@@ -1,7 +1,6 @@
 package net.wouterb.blockblock;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.wouterb.blockblock.util.ModRegistries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +19,11 @@ public class BlockBlock implements ModInitializer {
 	}
 }
 
-//TODO: Reset command
+// Bugs
+//TODO: On death client config resets
 
-//TODO: Create integration
+// Integration
+//TODO: Create mod integration
 //TODO: Tom's Simple Storage integration
 //TODO: Backpack integration
-//TODO: (Possibly?) Trowel mod integration
+//TODO: Trowel mod integration

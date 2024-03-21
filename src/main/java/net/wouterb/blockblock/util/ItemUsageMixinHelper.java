@@ -39,15 +39,7 @@ public class ItemUsageMixinHelper {
 
     public static boolean isItemLocked(PlayerEntity player, Hand hand) {
         ItemStack tool = player.getStackInHand(hand);
-        String itemId = Registries.ITEM.getId(tool.getItem()).toString();
-        IPlayerPermissionHelper playerPermission = (IPlayerPermissionHelper) player;
-        if (playerPermission.isItemLocked(itemId, ModLockManager.LockType.ITEM_USAGE)) {
-            String translationKey = tool.getTranslationKey();
-            String localizedName = Text.translatable(translationKey).getString();
-            ModLockManager.sendLockedFeedbackToPlayer(player, ModLockManager.LockType.ITEM_USAGE, localizedName);
-            return true;
-        }
-        return false;
+        return isItemLocked(player, tool);
     }
 
     public static void updateInventory(ServerPlayerEntity player) {

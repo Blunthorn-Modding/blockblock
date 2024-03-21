@@ -2,8 +2,13 @@ package net.wouterb.blockblock.mixin.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.wouterb.blockblock.BlockBlock;
+import net.wouterb.blockblock.config.LockedDefaultValues;
+import net.wouterb.blockblock.config.ModConfigManager;
 import net.wouterb.blockblock.util.IEntityDataSaver;
+import net.wouterb.blockblock.util.ModLockManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -25,6 +30,28 @@ public abstract class EntityDataSaverMixin implements IEntityDataSaver {
     @Override
     public void setPersistentData(NbtCompound data) {
         this.persistentData = data;
+    }
+
+
+    @Override
+    public void resetPersistentData(boolean wipe) {
+        if (wipe)
+            persistentData = new NbtCompound();
+        else
+            setDefaultValues();
+    }
+
+    @Override
+    public void setDefaultValues() {
+        LockedDefaultValues defaultValues = ModConfigManager.getDefaultLockedValues();
+        for (ModLockManager.LockType lockType : ModLockManager.LockType.values()){
+            String[] locked = defaultValues.getFieldByString(lockType.toString());
+            NbtList nbtList = new NbtList();
+            for (String id : locked)
+                nbtList.add(NbtString.of(id));
+
+            persistentData.put(lockType.toString(), nbtList);
+        }
     }
 
     @Inject(method = "writeNbt", at = @At("HEAD"))

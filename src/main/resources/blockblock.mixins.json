@@ -5,6 +5,7 @@
 	"mixins": [
 		"block.BlockMixin",
 		"block.AbstractBlockStateMixin",
+		"block.TntBlockMixin",
 		"entity.EntityDataSaverMixin",
 		"entity.PlayerPermissionMixin",
 		"entity.PlayerEntityMixin",

@@ -3,7 +3,6 @@ package net.wouterb.blockblock.compat.jade;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
@@ -35,6 +34,15 @@ public enum EntityComponentProvider implements IEntityComponentProvider {
             ItemStack stack = ((ItemEntity)accessor.getEntity()).getStack();
             entityId = Registries.ITEM.getId(stack.getItem()).toString();
         }
+
+        if (playerPermission.isBlockLocked(entityId, ModLockManager.LockType.BREAKING))
+            tooltip.add(1, Text.translatable("tooltip.blockblock.breaking_locked").formatted(Formatting.RED));
+
+        if (playerPermission.isBlockLocked(entityId, ModLockManager.LockType.PLACEMENT))
+            tooltip.add(1, Text.translatable("tooltip.blockblock.placement_locked").formatted(Formatting.RED));
+
+        if (playerPermission.isBlockLocked(entityId, ModLockManager.LockType.BLOCK_INTERACTION))
+            tooltip.add(1, Text.translatable("tooltip.blockblock.block_interaction_locked").formatted(Formatting.RED));
 
         if (playerPermission.isEntityLocked(entityId, ModLockManager.LockType.ENTITY_INTERACTION))
             tooltip.add(1, Text.translatable("tooltip.blockblock.entity_interaction_locked").formatted(Formatting.RED));
