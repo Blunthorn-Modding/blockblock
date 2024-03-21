@@ -24,6 +24,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AbstractBlock.AbstractBlockState.class)
 public class AbstractBlockStateMixin {
+
+    @Inject(method = "onBlockBreakStart", at = @At("HEAD"))
+    private void onBlockBreakStart(World world, BlockPos pos, PlayerEntity player, CallbackInfo ci) {
+        BlockState state = world.getBlockState(pos);
+        String blockId = Registries.BLOCK.getId(state.getBlock()).toString();
+
+        if (((IPlayerPermissionHelper) player).isBlockLocked(blockId, LockType.BREAKING)){
+            String translationKey = state.getBlock().getTranslationKey();
+            String localizedName = Text.translatable(translationKey).getString();
+            ModLockManager.sendLockedFeedbackToPlayer(player, LockType.BREAKING, localizedName);
+        }
+    }
+
     // Block interaction lock
     @Inject(method = "onUse", at = @At("INVOKE"), cancellable = true)
     public void onUse(World world, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> ci) {
@@ -50,16 +63,6 @@ public class AbstractBlockStateMixin {
 
         boolean isBlockLocked = playerPermissionHelper.isBlockLocked(blockId, LockType.BREAKING);
         boolean isItemLocked = playerPermissionHelper.isItemLocked(itemId, LockType.ITEM_USAGE);
-
-        if (isBlockLocked) {
-            String translationKey = state.getBlock().getTranslationKey();
-            String localizedName = Text.translatable(translationKey).getString();
-            ModLockManager.sendLockedFeedbackToPlayer(player, LockType.BREAKING, localizedName);
-        } else if (isItemLocked) {
-            String translationKey = tool.getTranslationKey();
-            String localizedName = Text.translatable(translationKey).getString();
-            ModLockManager.sendLockedFeedbackToPlayer(player, LockType.ITEM_USAGE, localizedName);
-        }
 
         if (isBlockLocked || isItemLocked){
             float originalDelta = ci.getReturnValueF();

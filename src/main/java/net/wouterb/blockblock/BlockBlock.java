@@ -19,6 +19,10 @@ public class BlockBlock implements ModInitializer {
 	}
 }
 
+// General
+//TODO: Add help command
+//TODO: Move messages to lang file too
+
 // Bugs
 //TODO: On death client config resets
 
