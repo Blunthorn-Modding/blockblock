@@ -15,6 +15,8 @@ import snownee.jade.api.IEntityComponentProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
 
+import static net.wouterb.blockblock.util.mixinhelpers.CraftingRecipeMixinHelper.isRecipeLocked;
+
 public enum EntityComponentProvider implements IEntityComponentProvider {
     INSTANCE;
 
@@ -53,7 +55,7 @@ public enum EntityComponentProvider implements IEntityComponentProvider {
         if (playerPermission.isItemLocked(entityId, ModLockManager.LockType.ITEM_USAGE))
             tooltip.add(1, Text.translatable("tooltip.blockblock.item_usage_locked").formatted(Formatting.RED));
 
-        if (playerPermission.isItemLocked(entityId, ModLockManager.LockType.CRAFTING_RECIPE))
+        if (isRecipeLocked(playerPermission, entityId))
             tooltip.add(1, Text.translatable("tooltip.blockblock.crafting_recipe_locked").formatted(Formatting.RED));
     }
 

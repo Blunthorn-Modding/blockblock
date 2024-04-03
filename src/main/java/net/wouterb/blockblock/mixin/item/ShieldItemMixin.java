@@ -6,7 +6,7 @@ import net.minecraft.item.ShieldItem;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
-import net.wouterb.blockblock.util.ItemUsageMixinHelper;
+import net.wouterb.blockblock.util.mixinhelpers.ItemUsageMixinHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

@@ -1,34 +1,26 @@
 package net.wouterb.blockblock.mixin.entity;
 
-import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsage;
-import net.minecraft.item.Items;
-import net.minecraft.network.packet.s2c.play.InventoryS2CPacket;
 import net.minecraft.registry.Registries;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.collection.DefaultedList;
 import net.wouterb.blockblock.util.IPlayerPermissionHelper;
-import net.wouterb.blockblock.util.ItemUsageMixinHelper;
+import net.wouterb.blockblock.util.mixinhelpers.ItemUsageMixinHelper;
 import net.wouterb.blockblock.util.ModLockManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.io.Console;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
@@ -57,6 +49,28 @@ public class PlayerEntityMixin {
                 ItemUsageMixinHelper.updateInventory(serverPlayer);
         }
     }
+
+//    @Inject(method = "canEquip", at = @At("HEAD"), cancellable = true)
+//    public void canEquip(ItemStack stack, CallbackInfoReturnable<Boolean> ci) {
+//        PlayerEntity player = (PlayerEntity) (Object) this;
+//        System.out.println("Can equip!");
+//        if (ItemUsageMixinHelper.isItemLocked(player, stack)) {
+////            player.dropStack(stack);
+//            ci.setReturnValue(false);
+//        }
+//    }
+//    @Inject(method = "equipStack", at = @At("HEAD"), cancellable = true)
+//    public void equipStack(EquipmentSlot slot, ItemStack stack, CallbackInfo ci) {
+//        System.out.println("Equip stack!");
+//        if (slot.isArmorSlot()) {
+//            PlayerEntity player = (PlayerEntity) (Object) this;
+//
+//            if (ItemUsageMixinHelper.isItemLocked(player, stack)) {
+//                player.dropStack(stack);
+//                ci.cancel();
+//            }
+//        }
+//    }
 
     // Item usage lock (attack specific - DUH!)
     @Inject(method = "attack", at = @At("HEAD"), cancellable = true)

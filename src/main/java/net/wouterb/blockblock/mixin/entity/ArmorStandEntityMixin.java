@@ -10,7 +10,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
 import net.wouterb.blockblock.util.IPlayerPermissionHelper;
-import net.wouterb.blockblock.util.ItemUsageMixinHelper;
+import net.wouterb.blockblock.util.mixinhelpers.ItemUsageMixinHelper;
 import net.wouterb.blockblock.util.ModLockManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

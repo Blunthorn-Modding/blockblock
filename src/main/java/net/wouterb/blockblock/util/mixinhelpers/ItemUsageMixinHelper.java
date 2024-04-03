@@ -1,4 +1,4 @@
-package net.wouterb.blockblock.util;
+package net.wouterb.blockblock.util.mixinhelpers;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -10,6 +10,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
+import net.wouterb.blockblock.util.IPlayerPermissionHelper;
+import net.wouterb.blockblock.util.ModLockManager;
 
 public class ItemUsageMixinHelper {
     /**

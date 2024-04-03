@@ -10,8 +10,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.wouterb.blockblock.util.IPlayerPermissionHelper;
-import net.wouterb.blockblock.util.ItemUsageMixinHelper;
-import net.wouterb.blockblock.util.ModLockManager;
+import net.wouterb.blockblock.util.mixinhelpers.ItemUsageMixinHelper;
 import net.wouterb.blockblock.util.ModLockManager.LockType;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,6 +19,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
+
+import static net.wouterb.blockblock.util.mixinhelpers.CraftingRecipeMixinHelper.isRecipeLocked;
 
 @Mixin(ItemStack.class)
 public class ItemStackMixin {
@@ -51,7 +52,7 @@ public class ItemStackMixin {
         if (playerPermission.isItemLocked(stackId, LockType.ITEM_USAGE))
             list.add(1, Text.translatable("tooltip.blockblock.item_usage_locked").formatted(Formatting.RED));
 
-        if (playerPermission.isItemLocked(stackId, LockType.CRAFTING_RECIPE))
+        if (isRecipeLocked(playerPermission, stackId))
             list.add(1, Text.translatable("tooltip.blockblock.crafting_recipe_locked").formatted(Formatting.RED));
     }
 

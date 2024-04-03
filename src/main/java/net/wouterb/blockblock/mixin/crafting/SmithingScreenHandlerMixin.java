@@ -21,6 +21,8 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.List;
 
+import static net.wouterb.blockblock.util.mixinhelpers.CraftingRecipeMixinHelper.isRecipeLocked;
+
 
 @Mixin(SmithingScreenHandler.class)
 public abstract class SmithingScreenHandlerMixin extends ForgingScreenHandler {
@@ -41,7 +43,7 @@ public abstract class SmithingScreenHandlerMixin extends ForgingScreenHandler {
 
         IPlayerPermissionHelper playerPermissionHelper = (IPlayerPermissionHelper) player;
         String itemId = Registries.ITEM.getId(output.getItem()).toString();
-        if (playerPermissionHelper.isItemLocked(itemId, ModLockManager.LockType.CRAFTING_RECIPE)) {
+        if (isRecipeLocked(playerPermissionHelper, itemId)) {
             String translationKey = output.getTranslationKey();
             String localizedName = Text.translatable(translationKey).getString();
             ModLockManager.sendLockedFeedbackToPlayer(player, ModLockManager.LockType.CRAFTING_RECIPE, localizedName);

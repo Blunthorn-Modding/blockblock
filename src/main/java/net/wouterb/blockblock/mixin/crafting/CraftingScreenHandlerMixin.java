@@ -17,8 +17,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
+import static net.wouterb.blockblock.util.mixinhelpers.CraftingRecipeMixinHelper.isRecipeLocked;
 import java.util.Optional;
+
 
 @Mixin(CraftingScreenHandler.class)
 public class CraftingScreenHandlerMixin {
@@ -37,7 +38,7 @@ public class CraftingScreenHandlerMixin {
         String itemId = Registries.ITEM.getId(output.getItem()).toString();
         IPlayerPermissionHelper playerPermission = (IPlayerPermissionHelper) player;
 
-        if (playerPermission.isItemLocked(itemId, ModLockManager.LockType.CRAFTING_RECIPE)) {
+        if (isRecipeLocked(playerPermission, itemId)){
             String translationKey = output.getTranslationKey();
             String localizedName = Text.translatable(translationKey).getString();
             ModLockManager.sendLockedFeedbackToPlayer(player, ModLockManager.LockType.CRAFTING_RECIPE, localizedName);
