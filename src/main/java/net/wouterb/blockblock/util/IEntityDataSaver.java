@@ -9,4 +9,6 @@ public interface IEntityDataSaver {
     void resetPersistentData(boolean wipe);
 
     void setDefaultValues();
+
+    void setEmptyValues();
 }

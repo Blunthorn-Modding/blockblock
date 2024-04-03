@@ -35,10 +35,19 @@ public abstract class EntityDataSaverMixin implements IEntityDataSaver {
 
     @Override
     public void resetPersistentData(boolean wipe) {
+        persistentData = new NbtCompound();
         if (wipe)
-            persistentData = new NbtCompound();
+            setEmptyValues();
         else
             setDefaultValues();
+    }
+
+    @Override
+    public void setEmptyValues() {
+        for (ModLockManager.LockType lockType : ModLockManager.LockType.values()) {
+            NbtList nbtList = new NbtList();
+            persistentData.put(lockType.toString(), nbtList);
+        }
     }
 
     @Override
