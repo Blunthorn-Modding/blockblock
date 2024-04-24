@@ -57,6 +57,9 @@ public class PlayerPermissionMixin implements IPlayerPermissionHelper {
 
             nbtString = nbtString.replace("#", "");
 
+            if (object instanceof Item)
+                object = ((Item) object).getDefaultStack();
+
             TagKey<?> entryTagKey = TagKey.of(registry.getKey(), new Identifier(nbtString));
             if (object instanceof Block && ((Block) object).getDefaultState().isIn((TagKey<Block>) entryTagKey)) {
                 return true;
