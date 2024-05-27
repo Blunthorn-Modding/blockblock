@@ -27,10 +27,6 @@ import static net.wouterb.blockblock.util.mixinhelpers.CraftingRecipeMixinHelper
 @Mixin(SmithingScreenHandler.class)
 public abstract class SmithingScreenHandlerMixin extends ForgingScreenHandler {
 
-    @Nullable
-    @Shadow
-    private SmithingRecipe currentRecipe;
-
     public SmithingScreenHandlerMixin(ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
         super(type, syncId, playerInventory, context);
     }
