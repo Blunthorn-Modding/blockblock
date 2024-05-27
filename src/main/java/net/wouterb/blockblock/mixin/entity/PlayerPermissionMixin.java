@@ -100,7 +100,7 @@ public class PlayerPermissionMixin implements IPlayerPermissionHelper {
         return nbt.getList(ModLockManager.getNbtKey(lockType), NbtElement.STRING_TYPE);
     }
 
-    private String getIdOfStructure(ServerPlayerEntity player) {
+    public String getIdOfStructure(ServerPlayerEntity player) {
         ServerWorld world = player.getServerWorld();
         StructureAccessor structureAccessor = world.getStructureAccessor();
         BlockPos playerPos = player.getBlockPos();
@@ -111,7 +111,7 @@ public class PlayerPermissionMixin implements IPlayerPermissionHelper {
 
             Map<Structure, LongSet> structureMap = structureAccessor.getStructureReferences(playerPos);
             for (Structure structure : structureMap.keySet()){
-                StructureStart structureStart = structureAccessor.getStructureContaining(playerPos, structure);
+                StructureStart structureStart = structureAccessor.getStructureAt(playerPos, structure);
                 if (structureStart != StructureStart.DEFAULT) {
                     // Will run if the player is actually inside a structure
                     for (RegistryEntry<StructureType<?>> entry : structureRegistry.getIndexedEntries()) {
