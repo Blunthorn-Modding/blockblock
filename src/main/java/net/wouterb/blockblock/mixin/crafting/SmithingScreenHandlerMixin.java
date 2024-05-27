@@ -35,7 +35,7 @@ public abstract class SmithingScreenHandlerMixin extends ForgingScreenHandler {
     private void updateResultMixin(CallbackInfo ci, List<SmithingRecipe> list) {
         if (list.isEmpty()) return;
 
-        ItemStack output = list.get(0).getOutput(player.getWorld().getRegistryManager());
+        ItemStack output = list.get(0).getResult(player.getWorld().getRegistryManager());
 
         IPlayerPermissionHelper playerPermissionHelper = (IPlayerPermissionHelper) player;
         String itemId = Registries.ITEM.getId(output.getItem()).toString();

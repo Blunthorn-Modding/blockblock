@@ -38,6 +38,9 @@ public class ModConfig {
     @Comment("GENERAL\n# Whether the user will get the messages listed above or not")
     @StoreInConfig
     private static boolean displayMessagesToUser = true;
+//    @Comment("If true, players that are operators will not be affected by locked objects")
+//    @StoreInConfig
+//    private static boolean operatorBypassesRestrictions = false;
     @Comment("If true, players in creative will not be affected by locked objects")
     @StoreInConfig
     private static boolean creativeBypassesRestrictions = true;
@@ -63,6 +66,10 @@ public class ModConfig {
     public static boolean getCreativeBypassesRestrictions() {
         return creativeBypassesRestrictions;
     }
+
+//    public static boolean getOperatorBypassesRestrictions() {
+//        return operatorBypassesRestrictions;
+//    }
 
     public static boolean getBreakingLockedPreventsBreaking() { return breakingLockedPreventsBreaking; }
 

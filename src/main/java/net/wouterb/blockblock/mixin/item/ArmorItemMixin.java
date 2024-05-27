@@ -21,8 +21,8 @@ import java.util.List;
 public class ArmorItemMixin {
     @Inject(method = "dispenseArmor", at=@At("INVOKE"), cancellable = true)
     private static void dispenseArmor(BlockPointer pointer, ItemStack armor, CallbackInfoReturnable<Boolean> ci) {
-        BlockPos blockPos = pointer.getPos().offset(pointer.getBlockState().get(DispenserBlock.FACING));
-        List<LivingEntity> list = pointer.getWorld().getEntitiesByClass(LivingEntity.class, new Box(blockPos), EntityPredicates.EXCEPT_SPECTATOR.and(new EntityPredicates.Equipable(armor)));
+        BlockPos blockPos = pointer.pos().offset(pointer.state().get(DispenserBlock.FACING));
+        List<LivingEntity> list = pointer.world().getEntitiesByClass(LivingEntity.class, new Box(blockPos), EntityPredicates.EXCEPT_SPECTATOR.and(new EntityPredicates.Equipable(armor)));
         if (list.isEmpty()) {
             return;
         }

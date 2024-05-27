@@ -5,6 +5,7 @@ import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.registry.Registries;
 import net.minecraft.screen.CraftingScreenHandler;
@@ -29,11 +30,10 @@ public class CraftingScreenHandlerMixin {
                                        RecipeInputInventory craftingInventory, CraftingResultInventory resultInventory, CallbackInfo ci) {
         if (world.isClient) return;
 
-        Optional<CraftingRecipe> optional = world.getServer().getRecipeManager().getFirstMatch(RecipeType.CRAFTING, craftingInventory, world);
+        Optional<RecipeEntry<CraftingRecipe>> optional = world.getServer().getRecipeManager().getFirstMatch(RecipeType.CRAFTING, craftingInventory, world);
 
         if (optional.isEmpty()) return;
-
-        ItemStack output = optional.get().getOutput(world.getRegistryManager());
+        ItemStack output = optional.get().value().getResult(world.getRegistryManager());
 
         String itemId = Registries.ITEM.getId(output.getItem()).toString();
         IPlayerPermissionHelper playerPermission = (IPlayerPermissionHelper) player;

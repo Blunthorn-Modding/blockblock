@@ -105,6 +105,7 @@ public class PlayerPermissionMixin implements IPlayerPermissionHelper {
         StructureAccessor structureAccessor = world.getStructureAccessor();
         BlockPos playerPos = player.getBlockPos();
         boolean chunkContainsStructure = structureAccessor.hasStructureReferences(playerPos);
+//        System.out.println("chunkContainsStructure: " + chunkContainsStructure);
         if (chunkContainsStructure) {
             // Will run if the player is inside a chunk that has a structure
             Registry<StructureType<?>> structureRegistry = Registries.STRUCTURE_TYPE;
@@ -112,9 +113,11 @@ public class PlayerPermissionMixin implements IPlayerPermissionHelper {
             Map<Structure, LongSet> structureMap = structureAccessor.getStructureReferences(playerPos);
             for (Structure structure : structureMap.keySet()){
                 StructureStart structureStart = structureAccessor.getStructureContaining(playerPos, structure);
+//                StructureStart structureStart = structureAccessor.getStructureAt(playerPos, structure);
                 if (structureStart != StructureStart.DEFAULT) {
                     // Will run if the player is actually inside a structure
                     for (RegistryEntry<StructureType<?>> entry : structureRegistry.getIndexedEntries()) {
+//                        System.out.println(entry.getKey().get().getValue().toString());
                         if (entry.value() == structure.getType()) {
                             return entry.getKey().get().getValue().toString();
                         }
