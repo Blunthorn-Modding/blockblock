@@ -20,10 +20,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.wouterb.blockblock.BlockBlock;
-import net.wouterb.blockblock.command.LockCommand;
-import net.wouterb.blockblock.command.ReloadCommand;
-import net.wouterb.blockblock.command.ResetCommand;
-import net.wouterb.blockblock.command.UnlockCommand;
+import net.wouterb.blockblock.command.*;
 import net.wouterb.blockblock.config.ModConfig;
 import net.wouterb.blockblock.config.ModConfigManager;
 import net.wouterb.blockblock.network.ClientLockSyncHandler;
@@ -36,6 +33,7 @@ public class ModRegistries {
         CommandRegistrationCallback.EVENT.register(LockCommand::register);
         CommandRegistrationCallback.EVENT.register(ReloadCommand::register);
         CommandRegistrationCallback.EVENT.register(ResetCommand::register);
+        CommandRegistrationCallback.EVENT.register(BlockInfoCommand::register);
     }
 
     public static void registerConfigs() {

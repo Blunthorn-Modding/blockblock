@@ -12,7 +12,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -100,7 +100,7 @@ public class PlayerPermissionMixin implements IPlayerPermissionHelper {
         return nbt.getList(ModLockManager.getNbtKey(lockType), NbtElement.STRING_TYPE);
     }
 
-    private String getIdOfStructure(ServerPlayerEntity player) {
+    public String getIdOfStructure(ServerPlayerEntity player) {
         ServerWorld world = player.getServerWorld();
         StructureAccessor structureAccessor = world.getStructureAccessor();
         BlockPos playerPos = player.getBlockPos();
@@ -108,20 +108,13 @@ public class PlayerPermissionMixin implements IPlayerPermissionHelper {
 //        System.out.println("chunkContainsStructure: " + chunkContainsStructure);
         if (chunkContainsStructure) {
             // Will run if the player is inside a chunk that has a structure
-            Registry<StructureType<?>> structureRegistry = Registries.STRUCTURE_TYPE;
 
             Map<Structure, LongSet> structureMap = structureAccessor.getStructureReferences(playerPos);
             for (Structure structure : structureMap.keySet()){
-                StructureStart structureStart = structureAccessor.getStructureContaining(playerPos, structure);
-//                StructureStart structureStart = structureAccessor.getStructureAt(playerPos, structure);
+                StructureStart structureStart = structureAccessor.getStructureAt(playerPos, structure);
                 if (structureStart != StructureStart.DEFAULT) {
                     // Will run if the player is actually inside a structure
-                    for (RegistryEntry<StructureType<?>> entry : structureRegistry.getIndexedEntries()) {
-//                        System.out.println(entry.getKey().get().getValue().toString());
-                        if (entry.value() == structure.getType()) {
-                            return entry.getKey().get().getValue().toString();
-                        }
-                    }
+                    return player.getWorld().getRegistryManager().get(RegistryKeys.STRUCTURE).getId(structure).toString();
                 }
             }
         }
