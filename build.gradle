@@ -33,6 +33,7 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modImplementation "curse.maven:jade-324717:4792447"
+	modImplementation "curse.maven:toms-storage-fabric-396826:5211219"
 	modCompileOnly "curse.maven:modmenu-308702:5162837"
 	modRuntimeOnly "curse.maven:modmenu-308702:5162837"
 	// Uncomment the following line to enable the deprecated Fabric API modules. 
