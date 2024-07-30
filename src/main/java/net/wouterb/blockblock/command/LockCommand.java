@@ -2,6 +2,7 @@ package net.wouterb.blockblock.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.argument.RegistryEntryPredicateArgumentType;
 import net.minecraft.registry.RegistryKeys;

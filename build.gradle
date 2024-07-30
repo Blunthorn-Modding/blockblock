@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.5-SNAPSHOT'
+	id 'fabric-loom' version '1.7-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -9,12 +9,23 @@ group = project.maven_group
 base {
 	archivesName = project.archives_base_name
 }
-
 repositories {
 	maven {
 		url "https://www.cursemaven.com"
 		content {
 			includeGroup "curse.maven"
+		}
+	}
+
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = "Modrinth"
+				url = "https://api.modrinth.com/maven"
+			}
+		}
+		filter {
+			includeGroup "maven.modrinth"
 		}
 	}
 }
@@ -31,6 +42,7 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	modImplementation "maven.modrinth:blunthornapi:1.0.0-RC.1"
 
 	modImplementation "curse.maven:jade-324717:4792447"
 	modCompileOnly "curse.maven:modmenu-308702:5162837"
