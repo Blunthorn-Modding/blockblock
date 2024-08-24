@@ -28,14 +28,14 @@ public class ModConfigManager {
     public static void registerConfig() {
         Gson gson = new Gson();
 
-        Path configPath = Path.of(String.valueOf(CONFIG_DIR), CONFIG_FILE_NAME);
-        configFile = configPath.toFile();
-        if (!configFile.exists()) {
-            BlockBlock.LOGGER.info("No config found, generating one...");
-            ModConfig.generateDefaultConfig();
-        } else {
-            ModConfig.load();
-        }
+//        Path configPath = Path.of(String.valueOf(CONFIG_DIR), CONFIG_FILE_NAME);
+//        configFile = configPath.toFile();
+//        if (!configFile.exists()) {
+//            BlockBlock.LOGGER.info("No config found, generating one...");
+//            ModConfig.generateDefaultConfig();
+//        } else {
+//            ModConfig.load();
+//        }
 
         Path defaultValuesPath = Path.of(String.valueOf(CONFIG_DIR), DEFAULT_VALUES_FILE_NAME);
         defaultValuesFile = defaultValuesPath.toFile();

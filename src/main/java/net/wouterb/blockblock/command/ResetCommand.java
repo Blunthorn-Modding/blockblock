@@ -3,35 +3,23 @@ package net.wouterb.blockblock.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.EntityArgumentType;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.wouterb.blockblock.config.ModConfig;
-import net.wouterb.blockblock.config.ModConfigManager;
-import net.wouterb.blockblock.network.ClientLockSyncHandler;
-import net.wouterb.blockblock.network.ConfigSyncHandler;
-import net.wouterb.blockblock.util.IEntityDataSaver;
+import net.wouterb.blunthornapi.core.data.IEntityDataSaver;
+import net.wouterb.blunthornapi.core.data.ModRegistries;
+import net.wouterb.blunthornapi.core.network.PermissionSyncHandler;
 
 import java.util.Collection;
+
+import static net.wouterb.blockblock.BlockBlock.MOD_ID;
 
 public class ResetCommand {
 
     public static void register(CommandDispatcher<ServerCommandSource> serverCommandSourceCommandDispatcher, CommandRegistryAccess commandRegistryAccess, CommandManager.RegistrationEnvironment registrationEnvironment) {
-//        LiteralArgumentBuilder<ServerCommandSource> command = CommandManager.literal("bb").requires(source -> source.hasPermissionLevel(2))
-//                .then(CommandManager.literal("reset").requires(source -> source.hasPermissionLevel(2))
-//                        .then(CommandManager.argument("targets", EntityArgumentType.entities())
-//                                .then(CommandManager.argument("wipe", BoolArgumentType.bool())
-//                        .executes(
-//                        context -> run(context.getSource(),
-//                                EntityArgumentType.getPlayers(context, "targets"),
-//                                BoolArgumentType.getBool(context, "wipe")
-//                        )
-//                ))));
         LiteralArgumentBuilder<ServerCommandSource> command = CommandManager.literal("bb").requires(source -> source.hasPermissionLevel(2));
         var commandReset = CommandManager.literal("reset").requires(source -> source.hasPermissionLevel(2));
         var commandTargets = CommandManager.argument("targets", EntityArgumentType.entities());
@@ -54,9 +42,9 @@ public class ResetCommand {
 
         for (ServerPlayerEntity target : targets) {
             IEntityDataSaver dataSaver = (IEntityDataSaver) target;
-            dataSaver.resetPersistentData(wipe);
+            dataSaver.resetPersistentData(MOD_ID, wipe);
 
-            ClientLockSyncHandler.updateClient(target, dataSaver.getPersistentData());
+            PermissionSyncHandler.updateAllClientPermissions(target);
 
             if (player != null) {
                 if (wipe)

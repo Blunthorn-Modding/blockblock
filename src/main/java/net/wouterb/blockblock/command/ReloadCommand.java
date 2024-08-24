@@ -11,7 +11,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.wouterb.blockblock.config.ModConfig;
 import net.wouterb.blockblock.config.ModConfigManager;
-import net.wouterb.blockblock.network.ConfigSyncHandler;
+import net.wouterb.blunthornapi.core.network.ConfigSyncHandler;
 
 public class ReloadCommand {
 
@@ -32,7 +32,7 @@ public class ReloadCommand {
         MinecraftServer server = source.getServer();
         var players = server.getPlayerManager().getPlayerList();
         for (ServerPlayerEntity serverPlayer : players){
-            ConfigSyncHandler.updateClient(serverPlayer);
+            ConfigSyncHandler.updateAllClientConfigs(serverPlayer);
         }
 
         return 1;

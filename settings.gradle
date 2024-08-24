@@ -8,3 +8,6 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
+
+include 'BlunthornAPI'
+project (':BlunthornAPI').projectDir = new File(settingsDir, '../blunthornapi')

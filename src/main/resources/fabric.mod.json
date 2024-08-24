@@ -18,9 +18,6 @@
 		"main": [
 			"net.wouterb.blockblock.BlockBlock"
 		],
-		"client": [
-			"net.wouterb.blockblock.BlockBlockClient"
-		],
 		"jade": [
 			"net.wouterb.blockblock.compat.jade.JadeCompatPlugin"
 		],
