@@ -1,5 +1,7 @@
 package net.wouterb.blockblock.config;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.wouterb.blockblock.util.ModLockManager;
 import net.wouterb.blunthornapi.api.config.BlunthornConfig;
 import net.wouterb.blunthornapi.api.config.BlankLine;
@@ -10,7 +12,7 @@ import java.nio.file.Path;
 
 import static net.wouterb.blockblock.BlockBlock.MOD_ID;
 
-public class ModConfig extends BlunthornConfig {
+public class BlockBlockConfig extends BlunthornConfig {
     @StoreInConfig
     private static String objectIdPlaceholder = "{OBJECT}";
     @StoreInConfig
@@ -29,16 +31,19 @@ public class ModConfig extends BlunthornConfig {
     private static String messageRecipeUsage = "You do not have {OBJECT} unlocked!";
 
     @BlankLine
-    @Comment("GENERAL\n# Whether the user will get the messages listed above or not")
+    @Comment("GENERAL\n# [DEPRECATED] Whether the user will get the messages listed above or not")
     @StoreInConfig
     private static boolean displayMessagesToUser = true;
     @Comment("If true, players in creative will not be affected by locked objects")
     @StoreInConfig
     private static boolean creativeBypassesRestrictions = true;
+    @Comment("If true, operators will not be affected by locked objects")
+    @StoreInConfig
+    private static boolean operatorBypassesRestrictions = false;
     @Comment("If true, a locked block in category 'breaking' will become unbreakable by mining with hand/tool")
     @StoreInConfig
     private static boolean breakingLockedPreventsBreaking = false;
-    @Comment("This value determines how much longer it takes when trying to break a block that is locked.\n# Higher is slower. Value should be at least 0. Calculation: deltaBreakTime / lockedBreakTimeModifier")
+    @Comment("[DEPRECATED] This value determines how much longer it takes when trying to break a block that is locked.\n# Higher is slower. Value should be at least 0. Calculation: deltaBreakTime / lockedBreakTimeModifier")
     @StoreInConfig
     private static float lockedBreakTimeModifier = 5.0f;
 
@@ -58,6 +63,10 @@ public class ModConfig extends BlunthornConfig {
         return creativeBypassesRestrictions;
     }
 
+    public static boolean getOperatorBypassesRestrictions() {
+        return operatorBypassesRestrictions;
+    }
+
     public static boolean getBreakingLockedPreventsBreaking() { return breakingLockedPreventsBreaking; }
 
     public static float getLockedBreakTimeModifier() {
@@ -68,8 +77,22 @@ public class ModConfig extends BlunthornConfig {
         return displayMessagesToUser;
     }
 
+    @Override
+    public boolean isPlayerBypassingRestrictions(PlayerEntity player) {
+        if (getOperatorBypassesRestrictions()) {
+            if (player.hasPermissionLevel(4))
+                return true;
+        }
 
-    public ModConfig() {
+        if (getCreativeBypassesRestrictions()) {
+            if (player.isCreative()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public BlockBlockConfig() {
         this.filePath = Path.of(MOD_ID, MOD_ID + "_config.properties").toString();
         this.modId = MOD_ID;
         init();

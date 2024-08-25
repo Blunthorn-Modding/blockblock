@@ -16,8 +16,10 @@ public class ModConfigManager {
     private static File configFile;
     private static File defaultValuesFile;
 
-    private static ModConfig modConfig;
+    private static BlockBlockConfig blockBlockConfig;
     private static LockedDefaultValues lockedDefaultValues;
+
+    public static String configId;
 
 
     public static File getConfigFile() {

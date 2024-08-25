@@ -1,14 +1,16 @@
 package net.wouterb.blockblock.util;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.util.ActionResult;
 import net.wouterb.blockblock.command.LockCommand;
 import net.wouterb.blockblock.command.ReloadCommand;
 import net.wouterb.blockblock.command.ResetCommand;
 import net.wouterb.blockblock.command.UnlockCommand;
-import net.wouterb.blockblock.config.ModConfig;
+import net.wouterb.blockblock.config.BlockBlockConfig;
 import net.wouterb.blockblock.config.ModConfigManager;
 import net.wouterb.blunthornapi.api.Api;
+import net.wouterb.blunthornapi.api.context.ItemActionContext;
 import net.wouterb.blunthornapi.api.event.*;
 import net.wouterb.blunthornapi.api.permission.Permission;
 
@@ -23,18 +25,32 @@ public class ModRegistries {
     }
 
     public static void registerConfigs() {
-        Api.registerConfig(new ModConfig());
+        BlockBlockConfig config = new BlockBlockConfig();
+        Api.registerConfig(config);
         ModConfigManager.registerConfig();
+        ModConfigManager.configId = config.getConfigId();
     }
 
     public static void registerEvents() {
         BlockBreakEvent.ATTACK.register(blockActionContext -> {
+            ItemActionContext context = new ItemActionContext(blockActionContext);
+            if (Permission.isObjectLocked(context, MOD_ID)) {
+                return ActionResult.FAIL;
+            }
+
+            if (!BlockBlockConfig.getBreakingLockedPreventsBreaking())
+                return ActionResult.PASS;
+
             if (Permission.isObjectLocked(blockActionContext, MOD_ID))
                 return ActionResult.FAIL;
+
             return ActionResult.PASS;
         });
 
         BlockBreakEvent.BEFORE.register(blockActionContext -> {
+            if (!BlockBlockConfig.getBreakingLockedPreventsBreaking())
+                return ActionResult.PASS;
+
             if (Permission.isObjectLocked(blockActionContext, MOD_ID))
                 return ActionResult.FAIL;
             return ActionResult.PASS;

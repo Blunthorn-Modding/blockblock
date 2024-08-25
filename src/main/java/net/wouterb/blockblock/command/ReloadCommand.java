@@ -2,15 +2,14 @@ package net.wouterb.blockblock.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import java.util.List;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.wouterb.blockblock.config.ModConfig;
 import net.wouterb.blockblock.config.ModConfigManager;
+import net.wouterb.blunthornapi.api.config.ConfigManager;
 import net.wouterb.blunthornapi.core.network.ConfigSyncHandler;
 
 public class ReloadCommand {
@@ -25,6 +24,7 @@ public class ReloadCommand {
 
     public static int run(ServerCommandSource source) {
         ModConfigManager.registerConfig();
+        ConfigManager.getConfig(ModConfigManager.configId).load();
         ServerPlayerEntity player = source.getPlayer();
         if (player != null)
             player.sendMessage(Text.of("Reloaded the BlockBlock config!"));

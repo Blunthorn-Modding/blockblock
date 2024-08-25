@@ -7,7 +7,7 @@ import net.minecraft.nbt.NbtString;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.wouterb.blockblock.config.ModConfig;
+import net.wouterb.blockblock.config.BlockBlockConfig;
 
 public class ModLockManager {
 
@@ -27,9 +27,9 @@ public class ModLockManager {
     }
 
     public static void sendLockedFeedbackToPlayer(PlayerEntity player, LockType lockType, String objectId) {
-        if (!ModConfig.displayMessagesToUser()) return;
+        if (!BlockBlockConfig.displayMessagesToUser()) return;
 
-        String message = ModConfig.getMessage(lockType, objectId);
+        String message = BlockBlockConfig.getMessage(lockType, objectId);
         player.sendMessage(Text.of(message), true);
     }
 
