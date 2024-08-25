@@ -42,8 +42,8 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-//	modImplementation "maven.modrinth:blunthornapi:1.0.0-RC.2"
-	modImplementation project (':BlunthornAPI')
+	modImplementation "maven.modrinth:blunthornapi:1.0.0-1.20.x"
+//	modImplementation project (':BlunthornAPI')
 
 	modImplementation "curse.maven:jade-324717:4792447"
 	modCompileOnly "curse.maven:modmenu-308702:5162837"

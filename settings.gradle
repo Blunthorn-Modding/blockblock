@@ -9,5 +9,5 @@ pluginManagement {
 	}
 }
 
-include 'BlunthornAPI'
-project (':BlunthornAPI').projectDir = new File(settingsDir, '../blunthornapi')
+//include 'BlunthornAPI'
+//project (':BlunthornAPI').projectDir = new File(settingsDir, '../blunthornapi')
