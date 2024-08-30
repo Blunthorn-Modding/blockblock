@@ -5,5 +5,12 @@
   "tooltip.blockblock.entity_interaction_locked": "Interaction locked!",
   "tooltip.blockblock.entity_drop_locked": "Entity drops locked!",
   "tooltip.blockblock.item_usage_locked": "Usage locked!",
-  "tooltip.blockblock.crafting_recipe_locked": "Crafting locked!"
+  "tooltip.blockblock.crafting_recipe_locked": "Crafting locked!",
+  "message.blockblock.breaking": "You are not allowed to break {OBJECT}",
+  "message.blockblock.placement": "You are not allowed to place {OBJECT}",
+  "message.blockblock.block_interaction": "You are not allowed to use {OBJECT}",
+  "message.blockblock.entity_interaction": "You are not allowed to use {OBJECT}",
+  "message.blockblock.entity_drop": "You are not allowed to receive drops from {OBJECT}",
+  "message.blockblock.item_usage": "You are not allowed to use {OBJECT}",
+  "message.blockblock.crafting_recipe": "You are not allowed to craft {OBJECT}"
 }
