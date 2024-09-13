@@ -1,13 +1,9 @@
 package net.wouterb.blockblock.util;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
-import net.wouterb.blockblock.command.LockCommand;
-import net.wouterb.blockblock.command.ReloadCommand;
-import net.wouterb.blockblock.command.ResetCommand;
-import net.wouterb.blockblock.command.UnlockCommand;
+import net.wouterb.blockblock.command.*;
 import net.wouterb.blockblock.config.BlockBlockConfig;
 import net.wouterb.blockblock.config.ModConfigManager;
 import net.wouterb.blunthornapi.api.Api;
@@ -25,6 +21,7 @@ public class ModRegistries {
         CommandRegistrationCallback.EVENT.register(LockCommand::register);
         CommandRegistrationCallback.EVENT.register(ReloadCommand::register);
         CommandRegistrationCallback.EVENT.register(ResetCommand::register);
+        CommandRegistrationCallback.EVENT.register(GetCommand::register);
     }
 
     public static void registerConfigs() {
