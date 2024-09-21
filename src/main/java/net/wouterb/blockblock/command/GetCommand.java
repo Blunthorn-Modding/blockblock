@@ -67,6 +67,10 @@ public class GetCommand {
             NbtCompound nbt = ((IEntityDataSaver) target).blunthornapi$getPersistentData(BlockBlock.MOD_ID);
             String nbtKey = lockType.toString();
             NbtList locked = nbt.getList(nbtKey, NbtElement.STRING_TYPE);
+
+            if (locked.isEmpty())
+                source.getPlayer().sendMessage(Text.of("Nothing is locked in this category."));
+
             for (NbtElement element : locked){
                 String id = element.asString();
                 if (searchQuery == null || id.contains(searchQuery)) {

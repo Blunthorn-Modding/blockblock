@@ -33,12 +33,12 @@ public class ItemStackMixin {
         String stackId = Registries.ITEM.getId(stack.getItem()).toString();
 
         BlockPos newBlockPos = new BlockPos(0, 0, 0);
-        BlockActionContext breakingContext = new BlockActionContext(player.getWorld(), player, newBlockPos, stackId, net.wouterb.blunthornapi.api.permission.LockType.BREAKING);
-        BlockActionContext placementContext = new BlockActionContext(player.getWorld(), player, newBlockPos, stackId, net.wouterb.blunthornapi.api.permission.LockType.PLACEMENT);
-        BlockActionContext blockInteractionContext = new BlockActionContext(player.getWorld(), player, newBlockPos, stackId, net.wouterb.blunthornapi.api.permission.LockType.BLOCK_INTERACTION);
-        BlockActionContext craftingContext = new BlockActionContext(player.getWorld(), player, newBlockPos, stackId, net.wouterb.blunthornapi.api.permission.LockType.CRAFTING_RECIPE);
-        EntityActionContext entityInteractionContext = new EntityActionContext(player.getWorld(), player, stackId, net.wouterb.blunthornapi.api.permission.LockType.ENTITY_INTERACTION);
-        EntityActionContext entityDropContext = new EntityActionContext(player.getWorld(), player, stackId, net.wouterb.blunthornapi.api.permission.LockType.ENTITY_DROP);
+        BlockActionContext breakingContext = new BlockActionContext(player.getWorld(), player, newBlockPos, stackId, LockType.BREAKING);
+        BlockActionContext placementContext = new BlockActionContext(player.getWorld(), player, newBlockPos, stackId, LockType.PLACEMENT);
+        BlockActionContext blockInteractionContext = new BlockActionContext(player.getWorld(), player, newBlockPos, stackId, LockType.BLOCK_INTERACTION);
+        ItemActionContext craftingContext = new ItemActionContext(player.getWorld(), player, stack, LockType.CRAFTING_RECIPE);
+        EntityActionContext entityInteractionContext = new EntityActionContext(player.getWorld(), player, stackId, LockType.ENTITY_INTERACTION);
+        EntityActionContext entityDropContext = new EntityActionContext(player.getWorld(), player, stackId, LockType.ENTITY_DROP);
         ItemActionContext itemUsageContext = new ItemActionContext(player.getWorld(), player, stack, LockType.ITEM_USAGE);
 
         if (Permission.isObjectLocked(breakingContext, BlockBlock.MOD_ID))
@@ -61,7 +61,5 @@ public class ItemStackMixin {
 
         if (Permission.isObjectLocked(craftingContext, BlockBlock.MOD_ID))
             list.add(1, Text.translatable("tooltip.blockblock.crafting_recipe_locked").formatted(Formatting.RED));
-
-
     }
 }
