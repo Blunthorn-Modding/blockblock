@@ -9,8 +9,9 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.wouterb.blockblock.config.ModConfigManager;
+import net.wouterb.blunthornapi.api.Util;
 import net.wouterb.blunthornapi.api.config.ConfigManager;
-import net.wouterb.blunthornapi.core.network.ConfigSyncHandler;
+
 
 public class ReloadCommand {
 
@@ -32,7 +33,7 @@ public class ReloadCommand {
         MinecraftServer server = source.getServer();
         var players = server.getPlayerManager().getPlayerList();
         for (ServerPlayerEntity serverPlayer : players){
-            ConfigSyncHandler.updateAllClientConfigs(serverPlayer);
+            Util.updateAllClientConfigs(serverPlayer);
         }
 
         return 1;

@@ -35,7 +35,7 @@ public class ModRegistries {
         BlockBreakEvent.ATTACK.register(blockActionContext -> {
             ItemActionContext context = new ItemActionContext(blockActionContext);
             if (Permission.isObjectLocked(context, MOD_ID)) {
-                sendLockedFeedbackToPlayer(context);
+                BlockBlockUtil.sendLockedFeedbackToPlayer(context);
                 return ActionResult.FAIL;
             }
 
@@ -43,7 +43,7 @@ public class ModRegistries {
                 return ActionResult.PASS;
 
             if (Permission.isObjectLocked(blockActionContext, MOD_ID)) {
-                sendLockedFeedbackToPlayer(blockActionContext);
+                BlockBlockUtil.sendLockedFeedbackToPlayer(blockActionContext);
                 return ActionResult.FAIL;
             }
 
@@ -55,7 +55,7 @@ public class ModRegistries {
                 return ActionResult.PASS;
 
             if (Permission.isObjectLocked(blockActionContext, MOD_ID)) {
-                sendLockedFeedbackToPlayer(blockActionContext);
+                BlockBlockUtil.sendLockedFeedbackToPlayer(blockActionContext);
                 return ActionResult.FAIL;
             }
             return ActionResult.PASS;
@@ -63,7 +63,7 @@ public class ModRegistries {
 
         BlockBreakEvent.AFTER.register(blockActionContext -> {
             if (Permission.isObjectLocked(blockActionContext, MOD_ID)) {
-                sendLockedFeedbackToPlayer(blockActionContext);
+                BlockBlockUtil.sendLockedFeedbackToPlayer(blockActionContext);
                 return ActionResult.FAIL;
             }
             return ActionResult.PASS;
@@ -71,7 +71,7 @@ public class ModRegistries {
 
         BlockPlaceEvent.EVENT.register(blockActionContext -> {
             if (Permission.isObjectLocked(blockActionContext, MOD_ID)) {
-                sendLockedFeedbackToPlayer(blockActionContext);
+                BlockBlockUtil.sendLockedFeedbackToPlayer(blockActionContext);
                 return ActionResult.FAIL;
             }
             return ActionResult.PASS;
@@ -79,7 +79,7 @@ public class ModRegistries {
 
         BlockUseEvent.EVENT.register(blockActionContext -> {
             if (Permission.isObjectLocked(blockActionContext, MOD_ID)) {
-                sendLockedFeedbackToPlayer(blockActionContext);
+                BlockBlockUtil.sendLockedFeedbackToPlayer(blockActionContext);
                 return ActionResult.FAIL;
             }
             return ActionResult.PASS;
@@ -87,7 +87,7 @@ public class ModRegistries {
 
         ItemUseEvent.EVENT.register(itemActionContext -> {
             if (Permission.isObjectLocked(itemActionContext, MOD_ID)) {
-                sendLockedFeedbackToPlayer(itemActionContext);
+                BlockBlockUtil.sendLockedFeedbackToPlayer(itemActionContext);
                 return ActionResult.FAIL;
             }
             return ActionResult.PASS;
@@ -95,7 +95,7 @@ public class ModRegistries {
 
         EntityUseEvent.EVENT.register(entityActionContext -> {
             if (Permission.isObjectLocked(entityActionContext, MOD_ID)) {
-                sendLockedFeedbackToPlayer(entityActionContext);
+                BlockBlockUtil.sendLockedFeedbackToPlayer(entityActionContext);
                 return ActionResult.FAIL;
             }
             return ActionResult.PASS;
@@ -103,7 +103,7 @@ public class ModRegistries {
 
         ObjectCraftedEvent.EVENT.register(itemActionContext -> {
             if (Permission.isObjectLocked(itemActionContext, MOD_ID)) {
-                sendLockedFeedbackToPlayer(itemActionContext);
+                BlockBlockUtil.sendLockedFeedbackToPlayer(itemActionContext);
                 return ActionResult.FAIL;
             }
             return ActionResult.PASS;
@@ -111,14 +111,14 @@ public class ModRegistries {
 
         EntityItemDropEvent.EVENT.register(entityActionContext -> {
             if (Permission.isObjectLocked(entityActionContext, MOD_ID)) {
-                sendLockedFeedbackToPlayer(entityActionContext);
+                BlockBlockUtil.sendLockedFeedbackToPlayer(entityActionContext);
                 return ActionResult.FAIL;
             }
             return ActionResult.PASS;
         });
     }
 
-    public static void sendLockedFeedbackToPlayer(ActionContext context) {
+    protected static void sendLockedFeedbackToPlayer(ActionContext context) {
         if (!BlockBlockConfig.displayMessagesToUser()) return;
 
         String message = translate("message.blockblock." + context.getLockType());
