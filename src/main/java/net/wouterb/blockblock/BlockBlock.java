@@ -23,3 +23,13 @@ public class BlockBlock implements ModInitializer {
 		ModRegistries.registerEvents();
 	}
 }
+
+// General
+//TODO: Add help command
+//TODO: Move messages to lang file too
+
+// Integration
+//TODO: Create mod integration
+//TODO: Tom's Simple Storage integration
+//TODO: Backpack integration
+//TODO: Trowel mod integration

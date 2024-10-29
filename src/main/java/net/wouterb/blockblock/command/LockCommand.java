@@ -27,92 +27,68 @@ public class LockCommand {
         LiteralArgumentBuilder<ServerCommandSource> command = CommandManager.literal("bb").requires(source -> source.hasPermissionLevel(2));
 
         for (LockType lockType : LockType.values()) {
-            var commandLock = CommandManager.literal("lock").requires(source -> source.hasPermissionLevel(2));
+            var commandUnlock = CommandManager.literal("lock").requires(source -> source.hasPermissionLevel(2));
             var commandLockType = CommandManager.literal(lockType.toString()).requires(source -> source.hasPermissionLevel(2));
             var commandTarget = CommandManager.argument("targets", EntityArgumentType.entities());
 
             if (lockType == LockType.ENTITY_DROP || lockType == LockType.ENTITY_INTERACTION) {
-                commandLock.then(commandLockType.then(commandTarget
+                commandUnlock.then(commandLockType.then(commandTarget
                         .then(CommandManager.argument("namespace:entity_id/tag", RegistryEntryPredicateArgumentType.registryEntryPredicate(commandRegistryAccess, RegistryKeys.ENTITY_TYPE))
-                                .executes(context -> {
-                                            try {
-                                                return run(context.getSource(),
-                                                        lockType,
-                                                        EntityArgumentType.getPlayers(context, "targets"),
-                                                        RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:entity_id/tag", RegistryKeys.ENTITY_TYPE));
-                                            } catch (Exception e) {
-                                                String[] args = context.getInput().split(" ");
-                                                return run(context.getSource(),
-                                                        lockType,
-                                                        EntityArgumentType.getPlayers(context, "targets"),
-                                                        args[args.length - 1]);
-                                            }
-                                        }
+                                .executes(context -> run(context.getSource(),
+                                        lockType,
+                                        EntityArgumentType.getPlayers(context, "targets"),
+                                        RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:entity_id/tag", RegistryKeys.ENTITY_TYPE))
                                 )
                         )
                 ));
-            } else if (lockType == LockType.ITEM_USAGE || lockType == LockType.CRAFTING_RECIPE) {
-                commandLock.then(commandLockType.then(commandTarget
+            } else if (lockType == LockType.ITEM_USAGE) {
+                commandUnlock.then(commandLockType.then(commandTarget
                         .then(CommandManager.argument("namespace:item_id/tag", RegistryEntryPredicateArgumentType.registryEntryPredicate(commandRegistryAccess, RegistryKeys.ITEM))
-                                .executes(context -> {
-                                            try {
-                                                return run(context.getSource(),
-                                                        lockType,
-                                                        EntityArgumentType.getPlayers(context, "targets"),
-                                                        RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:item_id/tag", RegistryKeys.ITEM));
-                                            } catch (Exception e) {
-                                                String[] args = context.getInput().split(" ");
-                                                return run(context.getSource(),
-                                                        lockType,
-                                                        EntityArgumentType.getPlayers(context, "targets"),
-                                                        args[args.length - 1]);
-                                            }
-                                        }
+                                .executes(context -> run(context.getSource(),
+                                        lockType,
+                                        EntityArgumentType.getPlayers(context, "targets"),
+                                        RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:item_id/tag", RegistryKeys.ITEM))
+                                )
+                        )
+                ));
+            } else if (lockType == LockType.CRAFTING_RECIPE) {
+                commandUnlock.then(commandLockType.then(commandTarget
+                        .then(CommandManager.argument("namespace:recipe_id/tag", RegistryEntryPredicateArgumentType.registryEntryPredicate(commandRegistryAccess, RegistryKeys.ITEM))
+                                .executes(context -> run(context.getSource(),
+                                        lockType,
+                                        EntityArgumentType.getPlayers(context, "targets"),
+                                        RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:recipe_id/tag", RegistryKeys.ITEM))
                                 )
                         )
                 ));
             } else {
-                commandLock.then(commandLockType.then(commandTarget
+                commandUnlock.then(commandLockType.then(commandTarget
                         .then(CommandManager.argument("namespace:block_id/tag", RegistryEntryPredicateArgumentType.registryEntryPredicate(commandRegistryAccess, RegistryKeys.BLOCK))
-                                .executes(context -> {
-                                            try {
-                                                return run(context.getSource(),
-                                                        lockType,
-                                                        EntityArgumentType.getPlayers(context, "targets"),
-                                                        RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:block_id/tag", RegistryKeys.BLOCK));
-                                            } catch (Exception e) {
-                                                String[] args = context.getInput().split(" ");
-                                                return run(context.getSource(),
-                                                        lockType,
-                                                        EntityArgumentType.getPlayers(context, "targets"),
-                                                        args[args.length - 1]);
-                                            }
-                                        }
+                                .executes(context -> run(context.getSource(),
+                                        lockType,
+                                        EntityArgumentType.getPlayers(context, "targets"),
+                                        RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:block_id/tag", RegistryKeys.BLOCK))
                                 )
                         )
                 ));
             }
 
-            command.then(commandLock);
+            command.then(commandUnlock);
         }
 
         serverCommandSourceCommandDispatcher.register(command);
     }
 
+
     private static int run(ServerCommandSource source, LockType lockType, Collection<ServerPlayerEntity> targets, RegistryEntryPredicateArgumentType.EntryPredicate<?> objectOrTag) throws CommandSyntaxException {
-        String id = objectOrTag.asString();
-
-        return run(source, lockType, targets, id);
-    }
-
-    private static int run(ServerCommandSource source, LockType lockType, Collection<ServerPlayerEntity> targets, String objectOrTag) throws CommandSyntaxException {
         for (ServerPlayerEntity target : targets) {
-            boolean success = Permission.lockObject((IEntityDataSaver) target, objectOrTag, lockType, MOD_ID);
+            String id = objectOrTag.asString();
+            boolean success = Permission.lockObject((IEntityDataSaver) target, id, lockType, MOD_ID);
 
             if (success)
-                source.sendFeedback(() -> Text.literal("Locking " + objectOrTag + " for " + target.getName().getString() + " in " + lockType), true);
+                source.sendFeedback(() -> Text.literal("Locking " + id + " for " + target.getName().getString() + " in " + lockType), false);
             else
-                source.sendFeedback(() -> Text.literal(target.getName().getString() + " already has " + objectOrTag + " locked in " + lockType), false);
+                source.sendFeedback(() -> Text.literal(target.getName().getString() + " already has " + id + " locked in " + lockType), false);
         }
         return 1;
     }
