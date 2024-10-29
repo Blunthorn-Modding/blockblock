@@ -19,6 +19,9 @@ public class BlockBlockConfig extends BlunthornConfig {
     @Comment("If true, operators will not be affected by locked objects")
     @StoreInConfig
     private static boolean operatorBypassesRestrictions = false;
+    @Comment("If true, commands will be broadcast to all operators")
+    @StoreInConfig
+    private static boolean broadcastCommandsToOperators = true;
     @Comment("If true, a locked block in category 'breaking' will become unbreakable by mining with hand/tool")
     @StoreInConfig
     private static boolean breakingLockedPreventsBreaking = false;
@@ -43,6 +46,10 @@ public class BlockBlockConfig extends BlunthornConfig {
 
     public static boolean displayMessagesToUser() {
         return displayMessagesToUser;
+    }
+
+    public static boolean getBroadcastCommandsToOperators() {
+        return broadcastCommandsToOperators;
     }
 
     @Override

@@ -9,8 +9,8 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.wouterb.blockblock.config.BlockBlockConfig;
 import net.wouterb.blunthornapi.core.data.IEntityDataSaver;
-import net.wouterb.blunthornapi.core.data.ModRegistries;
 import net.wouterb.blunthornapi.core.network.PermissionSyncHandler;
 
 import java.util.Collection;
@@ -48,9 +48,9 @@ public class ResetCommand {
 
             if (player != null) {
                 if (wipe)
-                    player.sendMessage(Text.of(String.format("Removed all restrictions for %s", target.getName().getString())));
+                    source.sendFeedback(() -> Text.literal("Removed all restrictions for " + target.getName().getString()), BlockBlockConfig.getBroadcastCommandsToOperators());
                 else
-                    player.sendMessage(Text.of(String.format("Reset restrictions to default for %s", target.getName().getString())));
+                    source.sendFeedback(() -> Text.literal("Reset restrictions to default for " + target.getName().getString()), BlockBlockConfig.getBroadcastCommandsToOperators());
             }
         }
 

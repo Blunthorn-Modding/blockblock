@@ -22,6 +22,7 @@ public class ModRegistries {
         CommandRegistrationCallback.EVENT.register(ReloadCommand::register);
         CommandRegistrationCallback.EVENT.register(ResetCommand::register);
         CommandRegistrationCallback.EVENT.register(GetCommand::register);
+        CommandRegistrationCallback.EVENT.register(UnlockAllCommand::register);
     }
 
     public static void registerConfigs() {
