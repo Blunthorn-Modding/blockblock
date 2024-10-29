@@ -30,41 +30,61 @@ public class UnlockCommand {
             if (lockType == LockType.ENTITY_DROP || lockType == LockType.ENTITY_INTERACTION) {
                 commandUnlock.then(commandLockType.then(commandTarget
                         .then(CommandManager.argument("namespace:entity_id/tag", RegistryEntryPredicateArgumentType.registryEntryPredicate(commandRegistryAccess, RegistryKeys.ENTITY_TYPE))
-                                .executes(context -> run(context.getSource(),
-                                        lockType,
-                                        EntityArgumentType.getPlayers(context, "targets"),
-                                        RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:entity_id/tag", RegistryKeys.ENTITY_TYPE))
+                                .executes(context -> {
+                                            try {
+                                                return run(context.getSource(),
+                                                        lockType,
+                                                        EntityArgumentType.getPlayers(context, "targets"),
+                                                        RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:entity_id/tag", RegistryKeys.ENTITY_TYPE));
+                                            } catch (Exception e) {
+                                                String[] args = context.getInput().split(" ");
+                                                return run(context.getSource(),
+                                                        lockType,
+                                                        EntityArgumentType.getPlayers(context, "targets"),
+                                                        args[args.length - 1]);
+                                            }
+                                        }
                                 )
                         )
                 ));
-            } else if (lockType == LockType.ITEM_USAGE) {
+            } else if (lockType == LockType.ITEM_USAGE || lockType == LockType.CRAFTING_RECIPE) {
                 commandUnlock.then(commandLockType.then(commandTarget
                         .then(CommandManager.argument("namespace:item_id/tag", RegistryEntryPredicateArgumentType.registryEntryPredicate(commandRegistryAccess, RegistryKeys.ITEM))
-                                .executes(context -> run(context.getSource(),
-                                        lockType,
-                                        EntityArgumentType.getPlayers(context, "targets"),
-                                        RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:item_id/tag", RegistryKeys.ITEM))
-                                )
-                        )
-                ));
-            } else if (lockType == LockType.CRAFTING_RECIPE) {
-                commandUnlock.then(commandLockType.then(commandTarget
-                        .then(CommandManager.argument("namespace:recipe_id/tag", RegistryEntryPredicateArgumentType.registryEntryPredicate(commandRegistryAccess, RegistryKeys.ITEM))
-                                .executes(context -> run(context.getSource(),
-                                        lockType,
-                                        EntityArgumentType.getPlayers(context, "targets"),
-                                        RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:recipe_id/tag", RegistryKeys.ITEM))
+                                .executes(context -> {
+                                            try {
+                                                return run(context.getSource(),
+                                                        lockType,
+                                                        EntityArgumentType.getPlayers(context, "targets"),
+                                                        RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:item_id/tag", RegistryKeys.ITEM));
+                                            } catch (Exception e) {
+                                                String[] args = context.getInput().split(" ");
+                                                return run(context.getSource(),
+                                                        lockType,
+                                                        EntityArgumentType.getPlayers(context, "targets"),
+                                                        args[args.length - 1]);
+                                            }
+                                        }
                                 )
                         )
                 ));
             } else {
                 commandUnlock.then(commandLockType.then(commandTarget
                         .then(CommandManager.argument("namespace:block_id/tag", RegistryEntryPredicateArgumentType.registryEntryPredicate(commandRegistryAccess, RegistryKeys.BLOCK))
-                                .executes(context -> run(context.getSource(),
-                                        lockType,
-                                        EntityArgumentType.getPlayers(context, "targets"),
-                                        RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:block_id/tag", RegistryKeys.BLOCK))
-                                )
+                                .executes(context -> {
+                                    try {
+                                        return run(context.getSource(),
+                                                lockType,
+                                                EntityArgumentType.getPlayers(context, "targets"),
+                                                RegistryEntryPredicateArgumentType.getRegistryEntryPredicate(context, "namespace:block_id/tag", RegistryKeys.BLOCK));
+                                    } catch (Exception e) {
+                                        String[] args = context.getInput().split(" ");
+                                        return run(context.getSource(),
+                                                lockType,
+                                                EntityArgumentType.getPlayers(context, "targets"),
+                                                args[args.length - 1]);
+                                    }
+                                }
+                            )
                         )
                 ));
             }
@@ -77,14 +97,19 @@ public class UnlockCommand {
 
 
     private static int run(ServerCommandSource source, LockType lockType, Collection<ServerPlayerEntity> targets, RegistryEntryPredicateArgumentType.EntryPredicate<?> objectOrTag) throws CommandSyntaxException {
+        String id = objectOrTag.asString();
+
+        return run(source, lockType, targets, id);
+    }
+
+    private static int run(ServerCommandSource source, LockType lockType, Collection<ServerPlayerEntity> targets, String objectOrTag) throws CommandSyntaxException {
         for (ServerPlayerEntity target : targets) {
-            String id = objectOrTag.asString();
-            boolean success = Permission.unlockObject((IEntityDataSaver) target, id, lockType, MOD_ID);
+            boolean success = Permission.unlockObject((IEntityDataSaver) target, objectOrTag, lockType, MOD_ID);
 
             if (success)
-                source.sendFeedback(() -> Text.literal("Unlocking " + id + " for " + target.getName().getString() + " in " + lockType), false);
+                source.sendFeedback(() -> Text.literal("Unlocking " + objectOrTag + " for " + target.getName().getString() + " in " + lockType), true);
             else
-                source.sendFeedback(() -> Text.literal(target.getName().getString() + " already has " + id + " unlocked in " + lockType), false);
+                source.sendFeedback(() -> Text.literal(target.getName().getString() + " already has " + objectOrTag + " unlocked in " + lockType), false);
         }
         return 1;
     }
